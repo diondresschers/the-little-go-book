@@ -1,21 +1,21 @@
-# About This Book
+# Over Dit Boek
 
-## License
+## Licentie
 
-The Little Go Book is licensed under the Attribution-NonCommercial-ShareAlike 4.0 International license. You should not have paid for this book.
+The Little Go Book is gelicenseerd onder de Attribution-NonCommercial-ShareAlike 4.0 International-licentie. Je hoort niet te hebben betaald voor dit boek.
 
-You are free to copy, distribute, modify or display the book. However, I ask that you always attribute the book to me, Karl Seguin, and do not use it for commercial purposes.
+Je mag het boek vrij kopiëren, verspreiden, aanpassen of tonen. Ik vraag je echter altijd het boek aan mij, Karl Seguin, toe te schrijven en het niet voor commerciële doeleinden te gebruiken.
 
-You can see the full text of the license at:
+De volledige tekst van de licentie kun je bekijken op:
 
 <https://creativecommons.org/licenses/by-nc-sa/4.0/>
 
-## Latest Version
+## Laatste Versie
 
-The latest source of this book is available at:
+De meest recente versie van dit boek is beschikbaar op:
 <https://github.com/karlseguin/the-little-go-book>
 
-# Introduction
+# Introductie
 
 I've always had a love-hate relationship when it comes to learning new languages. On the one hand, languages are so fundamental to what we do, that even small changes can have measurable impact. That *aha* moment when something clicks can have a lasting effect on how you program and can redefine your expectations of other languages. On the downside, language design is fairly incremental. Learning new keywords, type system, coding style as well as new libraries, communities and paradigms is a lot of work that seems hard to justify. Compared to everything else we have to learn, new languages often feel like a poor investment of our time.
 
