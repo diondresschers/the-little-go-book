@@ -30,19 +30,40 @@ The latest source of this book is available at:
 <https://github.com/karlseguin/the-little-go-book>
 -->
 
-# Introduction
+# Introductie
 
+<!--
 I've always had a love-hate relationship when it comes to learning new languages. On the one hand, languages are so fundamental to what we do, that even small changes can have measurable impact. That *aha* moment when something clicks can have a lasting effect on how you program and can redefine your expectations of other languages. On the downside, language design is fairly incremental. Learning new keywords, type system, coding style as well as new libraries, communities and paradigms is a lot of work that seems hard to justify. Compared to everything else we have to learn, new languages often feel like a poor investment of our time.
+-->
 
+Ik heb altijd een haat-liefdeverhouding gehad met het leren van nieuwe programmeertalen. Aan de ene kant zijn talen zo fundamenteel voor hetgeen dat we doen dat zelfs kleine veranderingen een meetbare impact kunnen hebben. Dat *aha* moment wanneer iets duidelijk wordt, kan een blijvend effect hebben op hoe je programmeert en kan je verwachtingen van andere talen herdefiniëren. Aan de andere kant is taalontwerp meestal vrij incrementeel. Het leren van nieuwe keywords, een type-systeem, programmeerstijl en daarnaast nieuwe bibliotheken, communities en paradigma’s is veel werk, en het voelt vaak moeilijk te rechtvaardigen. In vergelijking met alles wat we moeten leren, voelt het leren van een nieuwe taal vaak als een slechte tijdsinvestering.
+
+<!--
 That said, we *have* to move forward. We *have* to be willing to take incremental steps because, again, languages are the foundation of what we do. Though the changes are often incremental, they tend to have a wide scope and they impact productivity, readability, performance, testability, dependency management, error handling, documentation, profiling, communities, standard libraries, and so on. Is there a positive way to say *death by a thousand cuts*?
+-->
 
+Maar goed, we *moeten* vooruit. We *moeten* bereid zijn om kleine stappen te zetten, want talen vormen nu eenmaal de basis van wat we doen. Hoewel de veranderingen vaak geleidelijk zijn, hebben ze meestal een brede impact op productiviteit, leesbaarheid, prestaties, testbaarheid, afhankelijkheidsbeheer, foutafhandeling, documentatie, profilering, communities, standaardbibliotheken, en meer. Is er een positieve manier om deze langzame pijnlijke dood te omschrijven?
+
+<!--
 That leaves us with an important question: **why Go?** For me, there are two compelling reasons. The first is that it's a relatively simple language with a relatively simple standard library. In a lot of ways, the incremental nature of Go is to simplify some of the complexity we've seen being added to languages over the last couple of decades. The other reason is that for many developers, it will complement your existing arsenal.
+-->
 
+Dat brengt ons bij een belangrijke vraag: **waarom Go?** Voor mij zijn er twee overtuigende redenen. De eerste is dat het een relatief eenvoudige taal is met een relatief eenvoudige standaardbibliotheek. Op veel manieren is de incrementele aanpak van Go juist bedoeld om de complexiteit te verminderen die in de afgelopen decennia aan programmeertalen is toegevoegd. De andere reden is dat Go voor veel ontwikkelaars een waardevolle aanvulling is op hun bestaande toolkit.
+
+<!--
 Go was built as a system language (e.g., operating systems, device drivers) and thus aimed at C and C++ developers. According to the Go team, and which is certainly true of me, application developers, not system developers, have become the primary Go users. Why? I can't speak authoritatively for system developers, but for those of us building websites, services, desktop applications and the like, it partially comes down to the emerging need for a class of systems that sit somewhere in between low-level system applications and higher-level applications.
+-->
 
+Go is ontwikkeld als een systeemtaal (bijvoorbeeld voor besturingssystemen en stuurprogramma's) en was dus oorspronkelijk gericht op C- en C++-ontwikkelaars. Volgens het Go-team, en dit geldt zeker ook voor mij, zijn het echter niet de systeemontwikkelaars maar juist de applicatieontwikkelaars die de belangrijkste gebruikers van Go zijn geworden. Waarom? Ik kan niet namens systeemontwikkelaars spreken, maar voor degenen onder ons die websites, services, desktopapplicaties en dergelijke bouwen, heeft het deels te maken met de groeiende behoefte aan een categorie die zich ergens tussen low-level systeemapplicaties en high-level applicaties bevinden.
+
+<!--
 Maybe it's a messaging, caching, computational-heavy data analysis, command line interface, logging or monitoring. I don't know what label to give it, but over the course of my career, as systems continue to grow in complexity and as concurrency frequently measures in the tens of thousands, there's clearly been a growing need for custom infrastructure-type systems. You *can* build such systems with Ruby or Python or something else (and many people do), but these types of systems can benefit from a more rigid type system and greater performance. Similarly, you *can* use Go to build websites (and many people do), but I still prefer, by a wide margin, the expressiveness of Node or Ruby for such systems.
+-->
+
+Misschien gaat het om messaging, caching, zware data-analyse, command-line interfaces, logging of monitoring. Ik weet niet precies welk label ik eraan moet geven, maar gedurende mijn carrière, naarmate systemen steeds complexer werden en gelijktijdige processen vaak in de tienduizenden lopen, is de behoefte aan op maat gemaakte infrastructuursystemen duidelijk toegenomen. Je kunt zulke systemen bouwen met Ruby, Python of iets anders (en veel mensen doen dat ook), maar dit soort systemen hebben baat bij een strikter typesysteem en betere prestaties. Op dezelfde manier kun je Go gebruiken om websites te bouwen (en veel mensen doen dat ook), maar persoonlijk geef ik nog steeds ruim de voorkeur aan de expressiviteit van Node of Ruby voor dat soort toepassingen.
 
 There are other areas where Go excels. For example, there are no dependencies when running a compiled Go program. You don't have to worry if your users have Ruby or the JVM installed, and if so, what version. For this reason, Go is becoming increasingly popular as a language for command-line interface programs and other types of utility programs you need to distribute (e.g., a log collector).
+
 
 Put plainly, learning Go is an efficient use of your time. You won't have to spend long hours learning or even mastering Go, and you'll end up with something practical from your effort.
 

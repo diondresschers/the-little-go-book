@@ -7,7 +7,16 @@
 * 
 Vertaalgids:
 
-* The Little Go Book ==
+* The Little Go Book == The Little Go Book
 * License => Licentie
 * Compilatie => Compilation
 * Syntax == Syntax
+* Language => Programmeertaal
+* Incremental => Incrementeel
+* Language Design => Taalontwerp
+* Keyword => Keyword
+* Type System => Type-systeem
+* Coding stijl => Programmeerstijl
+* Libraries => Bibliotheek
+* Community == Community
+* Paradigm => Paradigma
