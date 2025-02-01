@@ -20,3 +20,31 @@ Vertaalgids:
 * Libraries => Bibliotheek
 * Community == Community
 * Paradigm => Paradigma
+* Operating system => Besturingssysteem
+* Device Drivers => stuurprogramma's
+* Low-level == Low-Level
+* High-level == High-Level
+* Messaging ==
+* Caching ==
+* data-analysis => data-analyse
+* command line interface => command-line interfaces
+* logging ==
+* monitoring == 
+* process => proces
+* infrastructure-type systems => infrastructuursystemen
+* log collector => logverzamelaar
+* logging => loggen
+* modeling => moddelering
+* key-value store ==
+* relational database => relationele database
+* code snippet => code blok
+* compiled binary => gecombileerde binary
+* workspace == workspace
+* output == output
+* environment viriables => omgevingsvariabelen
+* prompt ==
+* command prompt => commandoprompt
+* statically typed => statisch getypeerd
+* assembler == 
+* type system => typesysteem
+* 

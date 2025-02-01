@@ -30,6 +30,12 @@ The latest source of this book is available at:
 <https://github.com/karlseguin/the-little-go-book>
 -->
 
+<!-- To Do: Vertaling checken of dit nog klopt -->
+
+## Vertaling
+
+Het boek is vertaald begin 2025 van het Engels naar het Nederlands door Dion Dresschers-Kurzak met toestemming van de auteur. Bij het vertalen is een afweging gemaakt welke (technische) termen vertaald worden naar het Nederlands en welke niet. Achterin het boes een vertaalgids meegeleverd, waar staat welke termen vertaald zijn en welke gelijk zijn gebleven. De code blokken in dit boek zijn grotendeels hetzelfde gebleven, waar voornamelijk de namen van variabelen zijn verandert naar het Nederlands, om het verschil tussen key-words en eigen tekst te verduidelijken. Ook de commentaren in de code blokken zijn vertaald naar het Nederlands.
+
 # Introductie
 
 <!--
@@ -62,32 +68,87 @@ Maybe it's a messaging, caching, computational-heavy data analysis, command line
 
 Misschien gaat het om messaging, caching, zware data-analyse, command-line interfaces, logging of monitoring. Ik weet niet precies welk label ik eraan moet geven, maar gedurende mijn carrière, naarmate systemen steeds complexer werden en gelijktijdige processen vaak in de tienduizenden lopen, is de behoefte aan op maat gemaakte infrastructuursystemen duidelijk toegenomen. Je kunt zulke systemen bouwen met Ruby, Python of iets anders (en veel mensen doen dat ook), maar dit soort systemen hebben baat bij een strikter typesysteem en betere prestaties. Op dezelfde manier kun je Go gebruiken om websites te bouwen (en veel mensen doen dat ook), maar persoonlijk geef ik nog steeds ruim de voorkeur aan de expressiviteit van Node of Ruby voor dat soort toepassingen.
 
+Er zijn andere gebieden waar Go in uitblinkt. Bijvoorbeeld, een gecompileerd Go-programma heeft geen afhankelijkheden tijdens het uitvoeren. Je hoeft je geen zorgen te maken of je gebruikers Ruby of de JVM geïnstalleerd hebben, en zo ja, welke versie. Om deze reden wordt Go steeds populairder als taal voor command-line interface (CLI) programma’s en andere soorten hulpprogramma’s die je moet verspreiden (bijvoorbeeld een logverzamelaar).
+
+<!--
 There are other areas where Go excels. For example, there are no dependencies when running a compiled Go program. You don't have to worry if your users have Ruby or the JVM installed, and if so, what version. For this reason, Go is becoming increasingly popular as a language for command-line interface programs and other types of utility programs you need to distribute (e.g., a log collector).
+-->
 
+Kort gezegd, Go leren is een efficiënte besteding van je tijd. Je hoeft niet urenlang te studeren of de taal volledig te beheersen, maar toch kan je er iets praktisch mee maken.
 
+<!--
 Put plainly, learning Go is an efficient use of your time. You won't have to spend long hours learning or even mastering Go, and you'll end up with something practical from your effort.
+-->
 
-## A Note from the Author
+## Voorwoord van de Auteur
 
+Ik heb getwijfeld om dit boek te schrijven om een paar redenen. De eerste is dat Go's eigen documentatie, met name [Effective Go](https://golang.org/doc/effective_go.html), uitstekend is.
+
+<!--
 I've hesitated writing this book for a couple reasons. The first is that Go's own documentation, in particular [Effective Go](https://golang.org/doc/effective_go.html), is solid.
+-->
 
+De andere reden is mijn ongemak bij het schrijven van een boek over een programmeertaal. Toen ik The Little MongoDB Book schreef, kon ik ervan uitgaan dat de meeste lezers de basisbeginselen van relationele databases en modellering begrepen. Bij The Little Redis Book kon ik aannemen dat lezers bekend waren met een key-value store en daarop voortbouwen.
+
+<!--
 The other is my discomfort at writing a book about a language. When I wrote The Little MongoDB Book, it was safe to assume most readers understood the basics of relational database and modeling. With The Little Redis Book, you could assume a familiarity with a key value store and take it from there.
+-->
 
+Als ik nadenk over de paragrafen en hoofdstukken die voor me liggen, weet ik dat ik diezelfde aannames niet kan maken. Hoeveel tijd besteed je aan interfaces, wetende dat het concept voor sommigen nieuw zal zijn, terwijl anderen niet meer nodig hebben dan *Heeft Go interfaces*? Uiteindelijk stelt het me gerust uit het feit dat jij me laat weten of sommige delen te oppervlakkig zijn of juist te gedetailleerd. Beschouw dit, plus de prijs van het boek.
+
+<!--
 As I think about the paragraphs and chapters that lay ahead, I know that I won't be able to make those same assumptions. How much time do you spend talking about interfaces knowing that for some, the concept will be new, while others won't need much more than *Go has interfaces*? Ultimately, I take comfort in knowing that you'll let me know if some parts are too shallow or others too detailed. Consider that the price of this book.
+-->
 
-# Getting Started
+# Aan de Slag
 
+Als je een beetje met Go wilt spelen, bekijk dan de [Go Playground](https://play.golang.org/). Hier kun je online code uitvoeren zonder iets te installeren. Dit is ook de meest gebruikelijke manier om Go-code te delen wanneer je hulp zoekt in [Go’s discussiegroep](https://groups.google.com/forum/#!forum/golang-nuts) en op platformen zoals StackOverflow.  
+
+<!--
 If you're looking to play a little with Go, you should check out the [Go Playground](https://play.golang.org/) which lets you run code online without having to install anything. This is also the most common way to share Go code when seeking help in [Go's discussion forum](https://groups.google.com/forum/#!forum/golang-nuts) and places like StackOverflow.
+-->
 
+Het installeren van Go is eenvoudig. Je kunt het vanuit de broncode installeren, maar ik raad aan om een van de vooraf gecompileerde binary te gebruiken. Wanneer je [de downloadpagina bezoekt](https://golang.org/dl/), zie je installers voor verschillende platformen. Laten we deze overslaan en zelf leren hoe we Go instellen. Zoals je zult zien, is dat niet moeilijk.
+
+<!--
 Installing Go is straightforward. You can install it from source, but I suggest you use one of the pre-compiled binaries. When you [go to the download page](https://golang.org/dl/), you'll see installers for various platforms. Let's avoid these and learn how to set up Go ourselves. As you'll see, it isn't hard.
+-->
 
+Behalve voor eenvoudige voorbeelden is Go ontworpen om te werken binnen een workspace. Deze workspace is een map met de submappen `bin`, `pkg` en `src`. Je zou misschien in de verleiding komen om Go aan je eigen structuur aan te passen – doe dat niet.  
+
+Normaal gesproken zet ik mijn projecten in `~/code`. Zo staat mijn blog in `~/code/blog`. Voor Go is mijn workspace `~/code/go` en zou mijn Go-aangedreven blog in `~/code/go/src/blog` staan.  
+
+Kort gezegd: maak een `go`-map met een `src`-submap op de plek waar je je projecten wilt opslaan.
+
+<!--
 Except for simple examples, Go is designed to work when your code is inside a workspace. The workspace is a folder composed of `bin`, `pkg` and `src` subfolders. You might be tempted to force Go to follow your own style - don't.
 
 Normally, I put my projects inside of `~/code`. For example, `~/code/blog` contains my blog. For Go, my workspace is `~/code/go` and my Go-powered blog would be in `~/code/go/src/blog`.
 
 In short, create a `go` folder with a `src` subfolder wherever you expect to put your projects.
+-->
 
 ## OSX / Linux
+
+Download het `tar.gz`-bestand voor jouw platform. Voor OSX is dat waarschijnlijk `go#.#.#.darwin-amd64-osx10.8.tar.gz`, waarbij `#.#.#` de meest recente versie van Go is.  
+
+Pak het bestand uit naar `/usr/local` met: `tar -C /usr/local -xzf go#.#.#.darwin-amd64-osx10.8.tar.gz`.
+
+Stel twee omgevingsvariabelen in:  
+
+  1. `GOPATH` verwijst naar je workspace, voor mij is dat `$HOME/code/go`.  
+  2. We moeten Go’s binaire bestanden toevoegen aan de `PATH`.  
+
+Dit kan via de shell:  
+
+  `echo 'export GOPATH=$HOME/code/go' >> $HOME/.profile`
+  `echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.profile`
+  
+Activeer deze variabelen door je shell opnieuw te openen of het volgende commando uit te voeren: `source $HOME/.profile`
+
+Typ `go version` en je zou een output moeten krijgen zoals `go version go1.3.3 darwin/amd64`.
+
+<!--
 Download the `tar.gz` for your platform. For OSX, you'll most likely be interested in `go#.#.#.darwin-amd64-osx10.8.tar.gz`, where `#.#.#` is the latest version of Go.
 
 Extract the file to `/usr/local` via `tar -C /usr/local -xzf go#.#.#.darwin-amd64-osx10.8.tar.gz`.
@@ -105,8 +166,26 @@ You can set these up from a shell:
 You'll want to activate these variables. You can close and reopen your shell, or you can run `source $HOME/.profile`.
 
 Type `go version` and you'll hopefully get an output that looks like `go version go1.3.3 darwin/amd64`.
+-->
 
 ## Windows
+
+Download het nieuwste zip-bestand. Als je een x64-systeem hebt, kies dan `go#.#.#.windows-amd64.zip`, waarbij `#.#.#` de nieuwste versie van Go is.  
+
+Pak het bestand uit op een locatie naar keuze. `c:\Go` is een goede optie.  
+
+Stel twee omgevingsvariabelen in:  
+
+  1. `GOPATH` verwijst naar je workspace. Dit kan bijvoorbeeld `c:\users\goku\work\go` zijn.  
+  2. Voeg `c:\Go\bin` toe aan je `PATH`-omgevingsvariabele.  
+
+Omgevingsvariabelen kun je instellen via de knop *Environment Variables* in het tabblad *Advanced* van het *System* configuratiescherm. Sommige versies van Windows geven toegang tot dit configuratiescherm via de optie *Advanced System Settings* binnen het *System* configuratiescherm.
+
+Heb je een Nederlanstalige versie van Windows dan kan je de omgevingsvariabelen instellen via de knop *Omgevingsvariabelen* in het tabblad *Geavanceerd* van het *Systeem*-configuratiescherm. Sommige Windows-versies doen dit via de optie *Gevavanceerde systeeminstellingen* in het *Systeem* configuratiescherm.
+
+Open een opdrachtprompt en typ `go version`. Hopelijk krijg je een output zoals `go version go1.3.3 windows/amd64`.
+
+<!--
 Download the latest zip file. If you're on an x64 system, you'll want `go#.#.#.windows-amd64.zip`, where `#.#.#` is the latest version of Go.
 
 Unzip it at a location of your choosing. `c:\Go` is a good choice.
@@ -119,38 +198,67 @@ Set up two environment variables:
 Environment variables can be set through the `Environment Variables` button on the `Advanced` tab of the `System` control panel. Some versions of Windows provide this control panel through the `Advanced System Settings` option inside the `System` control panel.
 
 Open a command prompt and type `go version`. You'll hopefully get an output that looks like `go version go1.3.3 windows/amd64`.
+-->
 
-# Chapter 1 - The Basics
+# Hoofdstuk 1 - De Basis
 
+Go is een gecompileerde, statisch typed taal met een C-achtige syntaxis en garbage collection. Wat betekent dat?
+
+<!--
 Go is a compiled, statically typed language with a C-like syntax and garbage collection. What does that mean?
+-->
 
 ## Compilation
 
+Compilatie is het proces waarbij de broncode die je schrijft, wordt vertaald naar een low-level programmeertaal – ofwel assembler (zoals bij Go), of een andere intermediaire taal (zoals bij Java en C#).
+
+Gecompileerde talen kunnen onprettig zijn om mee te werken omdat het compileren traag kan zijn. Het is lastig om snel te itereren als je minuten of zelfs uren moet wachten totdat je code is gecompileerd. Compilatiesnelheid is een van de belangrijkste ontwerpdoelen van Go. Dit is goed nieuws voor mensen die aan grote projecten werken, maar ook voor degenen die gewend zijn aan de snelle feedbackcyclus van geïnterpreteerde talen.
+
+Gecompileerde talen draaien vaak sneller, en het uitvoerbare bestand kan zonder extra afhankelijkheden worden uitgevoerd (althans, dat geldt voor talen zoals C, C++ en Go, die direct naar assembler compileren).
+
+<!--
 Compilation is the process of translating the source code that you write into a lower level language -- either assembly (as is the case with Go), or some other intermediary language (as with Java and C#).
 
 Compiled languages can be unpleasant to work with because compilation can be slow. It's hard to iterate quickly if you have to spend minutes or hours waiting for code to compile. Compilation speed is one of the major design goals of Go. This is good news for people working on large projects as well as those of us used to a quick feedback cycle offered by interpreted languages.
 
 Compiled languages tend to run faster and the executable can be run without additional dependencies (at least, that's true for languages like C, C++ and Go which compile directly to assembly).
+-->
 
-## Static Typing
+## Static Getypeerd
 
+Statische typering betekent dat variabelen een specifiek type moeten hebben (int, string, bool, []byte, etc.). Dit kan op twee manieren: door expliciet het type te definiëren bij de declaratie van de variabele of, in veel gevallen, door de compiler het type te laten afleiden (we zullen hier straks voorbeelden van zien).
+
+Er valt veel te zeggen over statische typering, maar het is iets wat je het beste begrijpt door naar code te kijken. Als je gewend bent aan dynamisch getypeerde talen, kan dit misschien wat omslachtig aanvoelen. Dat is begrijpelijk, maar statische typering heeft voordelen, vooral in combinatie met compilatie. Deze twee concepten worden vaak door elkaar gehaald. Vaak gaan ze samen, maar dat is geen vaste regel. Met een strikt typesysteem kan de compiler niet alleen syntactische fouten opsporen, maar ook verdere optimalisaties doorvoeren.
+
+<!--
 Being statically typed means that variables must be of a specific type (int, string, bool, []byte, etc.). This is either achieved by specifying the type when the variable is declared or, in many cases, letting the compiler infer the type (we'll look at examples shortly).
 
 There's a lot more that can be said about static typing, but I believe it's something better understood by looking at code. If you're used to dynamically typed languages, you might find this cumbersome. You're not wrong, but there are advantages, especially when you pair static typing with compilation. The two are often conflated. It's true that when you have one, you normally have the other but it isn't a hard rule. With a rigid type system, a compiler is able to detect problems beyond mere syntactical mistakes as well as make further optimizations.
+-->
 
 ## C-Like Syntax
 
+Wanneer we zeggen dat een taal een C-achtige syntaxis heeft, betekent dit dat als je ervaring hebt met andere C-achtige talen zoals C, C++, Java, JavaScript en C#, Go je waarschijnlijk bekend zal voorkomen –- althans oppervlakkig gezien. Zo betekent het bijvoorbeeld dat `&&` wordt gebruikt als een booleaanse AND, `==` wordt gebruikt om gelijkheid te vergelijken, `{` en `}` het begin en einde van een scope markeren, en dat array-indexen bij 0 beginnen.  
+
+Een C-achtige syntaxis impliceert meestal ook puntkomma’s aan het einde van regels en haakjes bij condities. Go doet echter afstand van beide, al worden haakjes nog steeds gebruikt om prioriteit te bepalen. Een `if`-statement ziet er bijvoorbeeld zo uit:  
+
+<!--
 Saying that a language has a C-like syntax means that if you're used to any other C-like languages such as C, C++, Java, JavaScript and C#, then you're going to find Go familiar -- superficially, at least. For example, it means `&&` is used as a boolean AND, `==` is used to compare equality, `{` and `}` start and end a scope, and array indexes start at 0.
 
 C-like syntax also tends to mean semi-colon terminated lines and parentheses around conditions. Go does away with both of these, though parentheses are still used to control precedence. For example, an `if` statement looks like this:
+-->
 
 ```go
 if name == "Leto" {
-  print("the spice must flow")
+  print("de spice moet vloeien")
 }
 ```
 
+En in complexere gevallen blijven haakjes handig:
+
+<!--
 And in more complicated cases, parentheses are still useful:
+-->
 
 ```go
 if (name == "Goku" && power > 9000) || (name == "gohan" && power < 4000)  {
@@ -158,16 +266,55 @@ if (name == "Goku" && power > 9000) || (name == "gohan" && power < 4000)  {
 }
 ```
 
+Verder lijkt Go meer op C dan op C# of Java – niet alleen qua syntaxis, maar ook qua doel. Dit komt tot uiting in de beknoptheid en eenvoud van de taal, iets wat hopelijk duidelijker wordt naarmate je ermee vertrouwd raakt.
+
+<!--
 Beyond this, Go is much closer to C than C# or Java - not only in terms of syntax, but in terms of purpose. That's reflected in the terseness and simplicity of the language which will hopefully start to become obvious as you learn it.
+-->
 
 ## Garbage Collected
 
+Sommige variabelen hebben een eenvoudig te bepalen levensduur. Een variabele die lokaal is binnen een functie, verdwijnt bijvoorbeeld zodra de functie wordt afgesloten. In andere gevallen is dit minder duidelijk –- althans, voor een compiler. De levensduur van een variabele die door een functie wordt geretourneerd of door andere variabelen en objecten wordt gebruikt, kan lastig te bepalen zijn. Zonder garbage collection is het de verantwoordelijkheid van de ontwikkelaar om het geheugen van zulke variabelen vrij te geven op het moment dat ze niet meer nodig zijn. Hoe? In C doe je dat letterlijk met `free(str);`.  
+
+Talen met een garbage collector (zoals Ruby, Python, Java, JavaScript, C# en Go) houden dit automatisch bij en ruimen ongebruikte variabelen op. Garbage collection brengt enige overhead met zich mee, maar voorkomt ook een aantal ernstige bugs.
+
+<!--
 Some variables, when created, have an easy-to-define life. A variable local to a function, for example, disappears when the function exits. In other cases, it isn't so obvious -- at least to a compiler. For example, the lifetime of a variable returned by a function or referenced by other variables and objects can be tricky to determine. Without garbage collection, it's up to developers to free the memory associated with such variables at a point where the developer knows the variable isn't needed. How? In C, you'd literally `free(str);` the variable.
 
 Languages with garbage collectors (e.g., Ruby, Python, Java, JavaScript, C#, Go) are able to keep track of these and free them when they're no longer used. Garbage collection adds overhead, but it also eliminates a number of devastating bugs.
+-->
 
+# Het draaien van Go Code
+
+<!--
 ## Running Go Code
+-->
 
+Laten we onze reis beginnen met het maken van een eenvoudig programma en leren hoe we het kunnen compileren en uitvoeren. Open je favoriete teksteditor en schrijf de volgende code:
+
+```go
+package main
+
+func main() {
+  println("het is meer dan 9000!")
+}
+```
+
+Sla het bestand op als `main.go`. Voor nu kun je het overal opslaan waar je wilt; voor eenvoudige voorbeelden hoeven we ons niet in de Go-werkruimte te bevinden.  
+
+Open vervolgens een shell of opdrachtprompt en navigeer naar de map waar je het bestand hebt opgeslagen. In mijn geval betekent dat het volgende commando typen:  
+
+```
+cd ~/code
+```
+
+Voer tot slot het programma uit met het volgende commando:
+
+```
+go run main.go
+```
+
+<!--
 Let's start our journey by creating a simple program and learning how to compile and execute it. Open your favorite text editor and write the following code:
 
 ```go
@@ -187,7 +334,31 @@ Finally, run the program by entering:
 ```
 go run main.go
 ```
+-->
 
+Als alles goed is gegaan, zou je de tekst *het is meer dan 9000!* op het scherm moeten zien.  
+
+Maar wacht eens, hoe zit het met de compilatiestap? Het commando `go run` is handig omdat het je code zowel compileert *als* uitvoert. Het gebruikt een tijdelijke map om het programma te bouwen, voert het uit en verwijdert daarna de tijdelijke bestanden. Je kunt de locatie van het tijdelijke bestand bekijken door het volgende commando uit te voeren:  
+
+```
+go run --work main.go
+```
+
+Wil je je code expliciet compileren? Gebruik dan `go build`:  
+
+```
+go build main.go
+```
+
+Dit genereert een uitvoerbaar bestand met de naam `main`, dat je kunt uitvoeren. Op Linux en macOS moet je niet vergeten het uitvoerbare bestand aan te roepen met `./`, dus je typt:  
+
+```
+./main
+```
+
+Tijdens het ontwikkelen kun je zowel `go run` als `go build` gebruiken. Wanneer je je code echter wilt uitrollen, is het beter om een binaire executable te maken met `go build` en deze direct uit te voeren.
+
+<!--
 If everything worked, you should see *it's over 9000!*.
 
 But wait, what about the compilation step? `go run` is a handy command that compiles *and* runs your code. It uses a temporary directory to build the program, executes it and then cleans itself up. You can see the location of the temporary file by running:
@@ -205,6 +376,8 @@ go build main.go
 This will generate an executable `main` which you can run. On Linux / OSX, don't forget that you need to prefix the executable with dot-slash, so you need to type `./main`.
 
 While developing, you can use either `go run` or `go build`. When you deploy your code however, you'll want to deploy a binary via `go build` and execute that.
+
+-->
 
 ### Main
 
