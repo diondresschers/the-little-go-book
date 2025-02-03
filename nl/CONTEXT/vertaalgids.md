@@ -47,4 +47,17 @@ Vertaalgids:
 * statically typed => statisch getypeerd
 * assembler == 
 * type system => typesysteem
-* 
+* garbage collected ==
+* package ==
+* function => functie
+* import =~ importeren
+* built-in => ingebouwde
+* run => draaien
+* string ==
+* array ==
+* dictionary ==
+* elements =~ elementen8
+* path => pad
+* executable => uitvoerbare bestand
+* prefix => vooraf laten gaan
+* standard library => standaardbibliotheek

@@ -34,7 +34,9 @@ The latest source of this book is available at:
 
 ## Vertaling
 
-Het boek is vertaald begin 2025 van het Engels naar het Nederlands door Dion Dresschers-Kurzak met toestemming van de auteur. Bij het vertalen is een afweging gemaakt welke (technische) termen vertaald worden naar het Nederlands en welke niet. Achterin het boes een vertaalgids meegeleverd, waar staat welke termen vertaald zijn en welke gelijk zijn gebleven. De code blokken in dit boek zijn grotendeels hetzelfde gebleven, waar voornamelijk de namen van variabelen zijn verandert naar het Nederlands, om het verschil tussen key-words en eigen tekst te verduidelijken. Ook de commentaren in de code blokken zijn vertaald naar het Nederlands.
+Het boek is vertaald begin 2025 van het Engels naar het Nederlands door Dion Dresschers-Kurzak met toestemming van de auteur. Bij het vertalen is een afweging gemaakt welke (technische) termen vertaald worden naar het Nederlands en welke niet. Achterin het boes een vertaalgids meegeleverd, waar staat welke termen vertaald zijn en welke gelijk zijn gebleven. De code blokken in dit boek zijn grotendeels hetzelfde gebleven, waar voornamelijk de namen van variabelen zijn verandert naar het Nederlands, om het verschil tussen key-words en eigen tekst te verduidelijken. Ook de commentaren in de code blokken zijn vertaald naar het Nederlands. 
+
+Bij het maken viel me ook op dat recente versies van Go een ander gedrag vertoonden dan de auteur beschreef, wat tot wijziging van dit boek leidde. Hierbij heb ik aanpassingen gedaan van het boek. Mijn gebruikte versie is `go1.23.4 linux/amd64`.
 
 # Introductie
 
@@ -381,18 +383,56 @@ While developing, you can use either `go run` or `go build`. When you deploy you
 
 ### Main
 
+Hopelijk is de code die we zojuist hebben uitgevoerd begrijpelijk. We hebben een functie gemaakt en een string afgedrukt met de ingebouwde `println`-functie. Wist `go run` wat het moest uitvoeren omdat er maar één keuze was? Nee. In Go moet het startpunt van een programma een functie genaamd `main` zijn binnen een package `main`.
+
+We zullen later in een ander hoofdstuk meer praten over packages. Voor nu, terwijl we ons richten op het begrijpen van de basisprincipes van Go, zullen we onze code altijd binnen het `main`-package schrijven.
+
+Als je wilt, kun je de code aanpassen en de naam van het package veranderen. Voer de code uit met `go run` en je zou een foutmelding moeten krijgen. Verander de naam dan terug naar `main`, maar gebruik een andere functienaam. Je zou een andere foutmelding moeten zien. Probeer dezelfde wijzigingen aan te brengen, maar gebruik in plaats daarvan `go build`. Merk op dat de code compileert, maar dat er geen startpunt is om het uit te voeren. Dit is volkomen normaal wanneer je bijvoorbeeld een bibliotheek aan het bouwen bent.
+
+<!--
 Hopefully, the code that we just executed is understandable. We've created a function and printed out a string with the built-in `println` function. Did `go run` know what to execute because there was only a single choice? No. In Go, the entry point to a program has to be a function called `main` within a package `main`.
 
 We'll talk more about packages in a later chapter. For now, while we focus on understanding the basics of Go, we'll always write our code within the `main` package.
 
 If you want, you can alter the code and change the package name. Run the code via `go run` and you should get an error. Then, change the name back to `main` but use a different function name. You should see a different error message. Try making those same changes but use `go build` instead. Notice that the code compiles, there's just no entry point to run it. This is perfectly normal when you are, for example, building a library.
+-->
 
-## Imports
 
+## Importeren
+
+Go heeft een aantal ingebouwde functies, zoals `println`, die zonder referentie kunnen worden gebruikt. We komen echter niet ver zonder gebruik te maken van Go’s standaardbibliotheek en uiteindelijk ook externe bibliotheken. In Go wordt het `import`-keyword gebruikt om de packages te declareren die door de code in het bestand worden gebruikt.
+
+Laten we ons programma aanpassen:
+
+<!--
 Go has a number of built-in functions, such as `println`, which can be used without reference. We can't get very far though, without making use of Go's standard library and eventually using third-party libraries. In Go, the `import` keyword is used to declare the packages that are used by the code in the file.
 
 Let's change our program:
+-->
 
+```go
+package main
+
+import (
+  "fmt"
+  "os"
+)
+
+func main() {
+  if len(os.Args) != 2 {
+    os.Exit(1)
+  }
+  fmt.Println("Het is meer dan", os.Args[1])
+}
+```
+
+Welke je kan draaien via:
+
+```
+go run main.go 9000
+```
+
+<!--
 ```go
 package main
 
@@ -414,12 +454,31 @@ Which you can run via:
 ```
 go run main.go 9000
 ```
+-->
 
+Here is the Dutch translation of the provided English passage:
+
+---
+
+We gebruiken nu twee van Go’s standaardpakketten: `fmt` en `os`. We hebben ook een andere ingebouwde functie geïntroduceerd: `len`. `len` geeft de grootte van een string terug, of het aantal waarden in een dictionary, of, zoals we hier zien, het aantal elementen in een array. Als je je afvraagt waarom we 2 argumenten verwachten, komt dat doordat het eerste argument – op index 0 – altijd het pad van het momenteel draaiende uitvoerbare bestand is. (Verander het programma om dit uit te laten printen en zie het zelf.)
+
+---
+
+Laat het me weten als je nog verdere aanpassingen nodig hebt! 😊
+
+<!--
 We're now using two of Go's standard packages: `fmt` and `os`. We've also introduced another built-in function `len`. `len` returns the size of a string, or the number of values in a dictionary, or, as we see here, the number of elements in an array. If you're wondering why we expect 2 arguments, it's because the first argument -- at index 0 -- is always the path of the currently running executable. (Change the program to print it out and see for yourself.)
+-->
 
+Je hebt waarschijnlijk gemerkt dat we de functienaam vooraf laten gaan door het pakket, bijvoorbeeld `fmt.Println`. Dit is anders dan in veel andere talen. We zullen later in meer detail ingaan op pakketten. Voor nu is het voldoende om te weten hoe je een pakket importeert en gebruikt.
+
+Go is strikt met het importeren van pakketten. Het zal niet compileren als je een pakket importeert maar niet gebruikt. Probeer het volgende uit te voeren:
+
+<!--
 You've probably noticed we prefix the function name with the package, e.g., `fmt.Println`. This is different from many other languages. We'll learn more about packages in later chapters. For now, knowing how to import and use a package is a good start.
 
 Go is strict about importing packages. It will not compile if you import a package but don't use it. Try to run the following:
+-->
 
 ```go
 package main
@@ -433,10 +492,21 @@ func main() {
 }
 ```
 
+Je zou twee foutmeldingen moeten krijgen over `fmt` en `os` die geïmporteerd maar niet gebruikt worden. Kan dit vervelend zijn? Absoluut. Na verloop van tijd raak je eraan gewend (maar het blijft irritant). Go is hier strikt in omdat ongebruikte imports de compilatie kunnen vertragen – al is dat eerlijk gezegd een probleem waar de meesten van ons niet in die mate last van hebben.
+
+<!--
 You should get two errors about `fmt` and `os` being imported and not used. Can this get annoying? Absolutely. Over time, you'll get used to it (it'll still be annoying though). Go is strict about this because unused imports can slow compilation; admittedly a problem most of us don't have to this degree.
+-->
 
+TODO: Bij `go version go1.23.4 linux/amd64` lukt het wel het bestand uit te voeren via `go run`, en via te compileren via `go run`, maar het haalt de regels met van `import` gewoon weg uit het bestand `main.go`.
+
+Nog iets om op te merken is dat Go’s standaardbibliotheek goed gedocumenteerd is. Je kunt naar <https://golang.org/pkg/fmt/#Println> gaan om meer te leren over de `Println`-functie die we hebben gebruikt. Je kunt op de sectiekop klikken om de broncode te bekijken. Scroll ook naar boven om meer te ontdekken over de opmaakmogelijkheden van Go.
+
+<!--
 Another thing to note is that Go's standard library is well documented. You can head over to <https://golang.org/pkg/fmt/#Println> to learn more about the `Println` function that we used. You can click on that section header and see the source code. Also, scroll to the top to learn more about Go's formatting capabilities.
+-->
 
+<!-- TODO deze werkt niet in moderne versies van Go-->
 If you're ever stuck without internet access, you can get the documentation running locally via:
 
 ```
@@ -444,6 +514,9 @@ godoc -http=:6060
 ```
 
 and pointing your browser to `http://localhost:6060`
+-->
+
+<!-- TOT HIER-->
 
 ## Variables and Declarations
 

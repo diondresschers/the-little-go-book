@@ -11,4 +11,5 @@
 8. Hou een lijst met vorderingen bij, zodat duidelijk is wat reeds vertaald is en wat nog vertaald moet worden.
 9. Hou deze vertalingen van Engels naar Nederlands ook aan: [C:\MyFiles\SOFTENG.WPD - SOFTENG.pdf](https://www.angelfire.com/ca/vlietstra/SOFTENG.pdf)
 10. Doe paragraaf voor paragraaf en werk de vertaalgids bij.
+11. Voeg zelf geen tekst toe aan de output aan het begin en aan het eind zoals? "Hier is de vertaling van de gevraagde passage:', of "Wil je dat ik verdere aanpassingen doe volgende der vertaalrichtlijnen?"
  
