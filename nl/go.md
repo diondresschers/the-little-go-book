@@ -238,7 +238,7 @@ Being statically typed means that variables must be of a specific type (int, str
 There's a lot more that can be said about static typing, but I believe it's something better understood by looking at code. If you're used to dynamically typed languages, you might find this cumbersome. You're not wrong, but there are advantages, especially when you pair static typing with compilation. The two are often conflated. It's true that when you have one, you normally have the other but it isn't a hard rule. With a rigid type system, a compiler is able to detect problems beyond mere syntactical mistakes as well as make further optimizations.
 -->
 
-## C-Like Syntax
+## C-achtige Syntaxis
 
 Wanneer we zeggen dat een taal een C-achtige syntaxis heeft, betekent dit dat als je ervaring hebt met andere C-achtige talen zoals C, C++, Java, JavaScript en C#, Go je waarschijnlijk bekend zal voorkomen –- althans oppervlakkig gezien. Zo betekent het bijvoorbeeld dat `&&` wordt gebruikt als een booleaanse AND, `==` wordt gebruikt om gelijkheid te vergelijken, `{` en `}` het begin en einde van een scope markeren, en dat array-indexen bij 0 beginnen.  
 
@@ -498,15 +498,13 @@ Je zou twee foutmeldingen moeten krijgen over `fmt` en `os` die geïmporteerd ma
 You should get two errors about `fmt` and `os` being imported and not used. Can this get annoying? Absolutely. Over time, you'll get used to it (it'll still be annoying though). Go is strict about this because unused imports can slow compilation; admittedly a problem most of us don't have to this degree.
 -->
 
-TODO: Bij `go version go1.23.4 linux/amd64` lukt het wel het bestand uit te voeren via `go run`, en via te compileren via `go run`, maar het haalt de regels met van `import` gewoon weg uit het bestand `main.go`.
-
 Nog iets om op te merken is dat Go’s standaardbibliotheek goed gedocumenteerd is. Je kunt naar <https://golang.org/pkg/fmt/#Println> gaan om meer te leren over de `Println`-functie die we hebben gebruikt. Je kunt op de sectiekop klikken om de broncode te bekijken. Scroll ook naar boven om meer te ontdekken over de opmaakmogelijkheden van Go.
 
 <!--
 Another thing to note is that Go's standard library is well documented. You can head over to <https://golang.org/pkg/fmt/#Println> to learn more about the `Println` function that we used. You can click on that section header and see the source code. Also, scroll to the top to learn more about Go's formatting capabilities.
 -->
 
-<!-- TODO deze werkt niet in moderne versies van Go-->
+<!-- TODO deze werkt niet in moderne versies van Go
 If you're ever stuck without internet access, you can get the documentation running locally via:
 
 ```
@@ -518,13 +516,22 @@ and pointing your browser to `http://localhost:6060`
 
 <!-- TOT HIER-->
 
-## Variables and Declarations
+## Variabelen and Declaraties
 
+Het zou mooi zijn als we onze kijk op variabelen konden beginnen en eindigen met de simpele regel: *je declareert en wijst een variabele toe door x = 4 te schrijven.* Helaas is het in Go iets ingewikkelder. We beginnen met eenvoudige voorbeelden en breiden dit in het volgende hoofdstuk uit, als we structuren gaan maken en gebruiken. Toch zal het waarschijnlijk even duren voordat je je hier echt comfortabel bij voelt.
+
+Misschien denk je nu: *Wow! Wat kan hier zo ingewikkeld aan zijn?* Laten we beginnen met een paar voorbeelden.
+
+De meest expliciete manier om variabelen te declareren en toe te wijzen in Go is ook meteen de meest uitgebreide:
+
+
+<!--
 It'd be nice to begin and end our look at variables by saying *you declare and assign to a variable by doing x = 4.* Unfortunately, things are more complicated in Go. We'll begin our conversation by looking at simple examples. Then, in the next chapter, we'll expand this when we look at creating and using structures. Still, it'll probably take some time before you truly feel comfortable with it.
 
 You might be thinking *Woah! What can be so complicated about this?* Let's start looking at some examples.
 
 The most explicit way to deal with variable declaration and assignment in Go is also the most verbose:
+-->
 
 ```go
 package main
@@ -534,24 +541,53 @@ import (
 )
 
 func main() {
-  var power int
-  power = 9000
-  fmt.Printf("It's over %d\n", power)
+  var kracht int
+  kracht = 9000
+  fmt.Printf("Het is meer dan %d\n", kracht)
 }
 ```
 
+Hier declareren we een variabele kracht van het type int. Standaard wijst Go een nulwaarde toe aan variabelen. Zo krijgen gehele getallen (int) de waarde 0, booleans false, strings "", enzovoort. Vervolgens wijzen we 9000 toe aan onze kracht-variabele. We kunnen de eerste twee regels combineren tot:
+
+```go
+var kracht int = 9000
+```
+
+<!--
 Here, we declare a variable `power` of type `int`. By default, Go assigns a zero value to variables. Integers are assigned `0`, booleans `false`, strings `""` and so on. Next, we assign `9000` to our `power` variable. We can merge the first two lines:
 
 ```go
 var power int = 9000
 ```
+-->
 
+Toch is dat best wat typwerk. Go heeft een handige korte declaratie-operator, :=, die het type automatisch afleidt:
+
+```go
+kracht := 9000
+```
+
+<!--
 Still, that's a lot of typing. Go has a handy short variable declaration operator, `:=`, which can infer the type:
 
 ```go
 power := 9000
 ```
+-->
 
+Dit is handig en werkt net zo goed bij functies:
+
+```go
+func main() {
+  kracht := neemKracht()
+}
+
+func neemKracht() int {
+  return 9001
+}
+```
+
+<!--
 This is handy, and it works just as well with functions:
 
 ```go
@@ -563,7 +599,23 @@ func getPower() int {
   return 9001
 }
 ```
+-->
 
+Het is belangrijk om te onthouden dat := zowel de variabele declareert als er een waarde aan toekent. Waarom? Omdat een variabele niet twee keer gedeclareerd kan worden (tenminste, niet binnen dezelfde scope). Als je het volgende probeert uit te voeren, krijg je een foutmelding.
+
+```go
+func main() {
+  kracht := 9000
+  fmt.Printf("It's over %d\n", power)
+
+  // COMPILER FOUTMELDING:
+  // no new variables on left side of :=
+  kracht := 9001
+  fmt.Printf("Het is meer dan %d\n", kracht)
+}
+```
+
+<!--
 It's important that you remember that `:=` is used to declare the variable as well as assign a value to it. Why? Because a variable can't be declared twice (not in the same scope anyway). If you try to run the following, you'll get an error.
 
 ```go
@@ -577,11 +629,23 @@ func main() {
   fmt.Printf("It's also over %d\n", power)
 }
 ```
+-->
 
+De compiler zal klagen met de foutmelding *no new variables on left side of :=*. Dit betekent dat we `:=` gebruiken wanneer we een variabele voor het eerst declareren, maar bij latere toewijzingen de toewijzingsoperator `=` moeten gebruiken. Dit is logisch, maar het kan lastig zijn voor je spiergeheugen om te onthouden wanneer je tussen de twee moet schakelen.  
+
+Als je de foutmelding goed leest, valt op dat *variables* in het meervoud staat. Dat komt omdat Go toewijzing van meerdere variabelen tegelijk toestaat (zowel met `=` als met `:=`):
+
+```go
+func main() {
+  naam, kracht := "Goku", 9000
+  fmt.Printf("%s's kracht is meer dan %d\n", naam, kracht)
+}
+```
+
+<!--
 The compiler will complain with *no new variables on left side of :=*. This means that when we first declare a variable, we use `:=` but on subsequent assignment, we use the assignment operator `=`. This makes a lot of sense, but it can be tricky for your muscle memory to remember when to switch between the two.
 
 If you read the error message closely, you'll notice that *variables* is plural. That's because Go lets you assign multiple variables (using either `=` or `:=`):
-
 
 ```go
 func main() {
@@ -589,6 +653,9 @@ func main() {
   fmt.Printf("%s's power is over %d\n", name, power)
 }
 ```
+-->
+
+<!-- TOT HIER -->
 
 As long as one of the variables is new, `:=` can be used. Consider:
 
