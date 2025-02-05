@@ -655,8 +655,19 @@ func main() {
 ```
 -->
 
-<!-- TOT HIER -->
+Zolang een van de variabelen nieuw is, kan := worden gebruikt. Zie het volgende:
 
+```go
+func main() {
+  kracht := 1000
+  fmt.Printf("de standaard kracht is %d\n", kracht)
+
+  naam, kracht := "Goku", 9000
+  fmt.Printf("%s's kracht is meer dan %d\n", naam, kracht)
+}
+```
+
+<!--
 As long as one of the variables is new, `:=` can be used. Consider:
 
 ```go
@@ -668,7 +679,20 @@ func main() {
   fmt.Printf("%s's power is over %d\n", name, power)
 }
 ```
+-->
 
+Hoewel 'kracht` twee keer wordt gebruikt met `:=`, zal de compiler de tweede keer geen foutmelding geven. Dit komt doordat de andere variabele, name, nieuw is, waardoor `:=` toegestaan is. Je kunt echter het type van `kracht` niet wijzigen. Het is (impliciet) gedeclareerd als een integer en kan daarom alleen waarden van het type integer krijgen.
+
+Voor nu is het laatste om te weten dat Go, net als bij imports, geen ongebruikte variabelen toestaat. Bijvoorbeeld:
+
+```go
+func main() {
+  naam, kracht := "Goku", 1000
+  fmt.Printf("de stabdaard kracht is %d\n", kracht)
+}
+```
+
+<!--
 Although `power` is being used twice with `:=`, the compiler won't complain the second time we use it, it'll see that the other variable, `name`, is a new variable and allow `:=`. However, you can't change the type of `power`. It was declared (implicitly) as an integer and thus, can only be assigned integers.
 
 For now, the last thing to know is that, like imports, Go won't let you have unused variables. For example,
@@ -679,13 +703,38 @@ func main() {
   fmt.Printf("default power is %d\n", power)
 }
 ```
+-->
 
+zal niet compileren omdat `naam` wel is gedeclareerd maar niet gebruikt. Net als ongebruikte imports kan dit voor enige frustratie zorgen, maar over het algemeen draagt het bij aan de netheid en leesbaarheid van de code.
+
+Er valt nog meer te leren over declaraties en toewijzingen. Onthoud voor nu dat je `var NAAM TYPE` gebruikt bij het declareren van een variabele met een standaardwaarde, `NAAM := WAARDE` bij het declareren en toewijzen van een waarde, en `NAAM = WAARDE` bij het toewijzen aan een eerder gedeclareerde variabele.
+
+<!--
 won't compile because `name` is declared but not used. Like unused imports it'll cause some frustration, but overall I think it helps with code cleanliness and readability.
 
 There's more to learn about declaration and assignments. For now, remember that you'll use `var NAME TYPE` when declaring a variable to its zero value, `NAME := VALUE` when declaring and assigning a value, and `NAME = VALUE` when assigning to a previously declared variable.
+-->
 
+## Functie Declaraties
+
+<!--
 ## Function Declarations
+-->
 
+Dit is een goed moment om op te merken dat functies meerdere waarden kunnen retourneren. Laten we drie functies bekijken: één zonder retourneerwaarde, één met een enkele retourneerwaarde en één met twee retourneerwaarden.
+
+```go
+func log(bericht string) {
+}
+
+func optellen(a int, b int) int {
+}
+
+func kracht(naam string) (int, bool) {
+}
+```
+
+<!--
 This is a good time to point out that functions can return multiple values. Let's look at three functions: one with no return value, one with one return value, and one with two return values.
 
 ```go
@@ -698,7 +747,18 @@ func add(a int, b int) int {
 func power(name string) (int, bool) {
 }
 ```
+-->
 
+We gebruiken de laatste zo:
+
+```go
+waarde, bestaat := kracht("goku")
+if bestaat == false {
+  // deze fout afhandelen
+}
+```
+
+<!--
 We'd use the last one like so:
 
 ```go
@@ -707,7 +767,20 @@ if exists == false {
   // handle this error case
 }
 ```
+-->
 
+"Soms ben je maar in één van de geretourneerde waarden geïnteresseerd. In die gevallen ken je de andere waarden toe aan `_:`"
+
+```go
+_, bestaat := kracht("goku")
+if betstaat == false {
+  // deze fout afhandelen
+}
+```
+
+Dit is meer dan alleen een conventie. `_`, de lege identificator, is speciaal omdat de geretourneerde waarde daadwerkelijk niet wordt toegewezen. Dit stelt je in staat om `_` steeds opnieuw te gebruiken, ongeacht het geretourneerde type."
+
+<!--
 Sometimes, you only care about one of the return values. In these cases, you assign the other values to `_`:
 
 ```go
@@ -715,10 +788,22 @@ _, exists := power("goku")
 if exists == false {
   // handle this error case
 }
-```
 
 This is more than a convention. `_`, the blank identifier, is special in that the return value isn't actually assigned. This lets you use `_` over and over again regardless of the returned type.
+-->
 
+
+Tot slot is er nog iets waar je waarschijnlijk tegenaan zult lopen bij functiedeclaraties. Als parameters hetzelfde type delen, kunnen we een kortere syntax gebruiken:
+
+```go
+func optellen(a, b int) int {
+
+}
+```
+
+Het kunnen retourneren van meerdere waarden is iets wat je vaak zult gebruiken. Je zult ook regelmatig `_` gebruiken om een waarde te negeren. Genaamd retourneren en de iets minder uitgebreide parameterdeclaratie komen minder vaak voor. Toch zul je al deze concepten vroeg of laat tegenkomen, dus het is belangrijk om ervan op de hoogte te zijn.
+
+<!--
 Finally, there's something else that you're likely to run into with function declarations. If parameters share the same type, we can use a shorter syntax:
 
 ```go
@@ -728,6 +813,9 @@ func add(a, b int) int {
 ```
 
 Being able to return multiple values is something you'll use often. You'll also frequently use `_` to discard a value. Named return values and the slightly less verbose parameter declaration aren't that common. Still, you'll run into all of these sooner than later so it's important to know about them.
+-->
+
+<!-- TOT HIER -->
 
 ## Before You Continue
 

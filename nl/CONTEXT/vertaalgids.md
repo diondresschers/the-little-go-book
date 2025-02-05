@@ -26,6 +26,7 @@ Vertaalgids:
 * dictionary ==
 * elements =~ elementen8
 * error => foutmelding
+* error => fout
 * environment viriables => omgevingsvariabelen
 * executable => uitvoerbare bestand
 * function => functie
@@ -34,6 +35,9 @@ Vertaalgids:
 * High-level == High-Level
 * import =~ importeren
 * Incremental => Incrementeel
+* identifier =~ identificator
+* Integer == integer (geheel getal)
+* imports ==
 * infrastructure-type systems => infrastructuursystemen
 * key-value store ==
 * Keyword => Keyword
@@ -50,6 +54,7 @@ Vertaalgids:
 * monitoring == 
 * Operating system => Besturingssysteem
 * output == output
+* parameter declaration =~ parameterdeclaratie
 * package ==
 * Paradigm =~ Paradigma
 * path => pad
@@ -57,6 +62,8 @@ Vertaalgids:
 * process => proces
 * prompt ==
 * relational database => relationele database
+* return =~ retourneren
+* returnwaarde =~ retourneerwaarde
 * run => draaien
 * scope ==
 * standard library => standaardbibliotheek
