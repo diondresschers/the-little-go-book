@@ -514,8 +514,6 @@ godoc -http=:6060
 and pointing your browser to `http://localhost:6060`
 -->
 
-<!-- TOT HIER-->
-
 ## Variabelen and Declaraties
 
 Het zou mooi zijn als we onze kijk op variabelen konden beginnen en eindigen met de simpele regel: *je declareert en wijst een variabele toe door x = 4 te schrijven.* Helaas is het in Go iets ingewikkelder. We beginnen met eenvoudige voorbeelden en breiden dit in het volgende hoofdstuk uit, als we structuren gaan maken en gebruiken. Toch zal het waarschijnlijk even duren voordat je je hier echt comfortabel bij voelt.
@@ -815,35 +813,77 @@ func add(a, b int) int {
 Being able to return multiple values is something you'll use often. You'll also frequently use `_` to discard a value. Named return values and the slightly less verbose parameter declaration aren't that common. Still, you'll run into all of these sooner than later so it's important to know about them.
 -->
 
-<!-- TOT HIER -->
+## Voordat We Verder Gaan
 
+<!--
 ## Before You Continue
+-->
 
+We hebben een aantal kleine, op zichzelf staande stukken bekeken en het voelt waarschijnlijk nog wat onsamenhangend. We zullen geleidelijk grotere voorbeelden opbouwen, en hopelijk beginnen de stukjes op hun plaats te vallen.
+
+Als je uit een dynamische programmeertaal komt, lijkt de complexiteit rond types en declaraties misschien een stap terug. Ik zal je daarin niet tegenspreken. Voor sommige systemen zijn dynamische talen categorisch productiever.
+
+Als je uit een statisch getypeerde taal komt, voel je je waarschijnlijk comfortabel met Go. Geïnferreerde types en meerdere returnwaarden zijn prettig (al zijn ze zeker niet exclusief voor Go). Hopelijk ga je, naarmate we meer leren, de duidelijke en beknopte syntaxis waarderen.
+
+<!--
 We looked at a number of small individual pieces and it probably feels disjointed at this point. We'll slowly build larger examples and hopefully, the pieces will start to come together.
 
 If you're coming from a dynamic language, the complexity around types and declarations might seem like a step backwards. I don't disagree with you. For some systems, dynamic languages are categorically more productive.
 
 If you're coming from a statically typed language, you're probably feeling comfortable with Go. Inferred types and multiple return values are nice (though certainly not exclusive to Go). Hopefully as we learn more, you'll appreciate the clean and terse syntax.
+-->
 
+# Hoofdstuk 2 - Strukturen
+
+Go is geen objectgeoriënteerde (OO) taal zoals C++, Java, Ruby en C#. Het heeft geen objecten of overerving en daarmee ook niet de vele concepten die bij OO horen, zoals polymorfisme en overloading.
+
+Wat Go wél heeft, zijn structuren die geassocieerd kunnen worden met methoden. Daarnaast ondersteunt Go een eenvoudige maar effectieve vorm van compositie. Dit resulteert over het algemeen in eenvoudiger code, al zullen er momenten zijn waarop je bepaalde aspecten van OO zult missen. (Composition over inheritance is al lang een veelgehoorde leus, en Go is de eerste taal die ik heb gebruikt die hier echt een standpunt over inneemt.)
+
+Hoewel Go OO niet implementeert zoals je misschien gewend bent, zul je veel overeenkomsten zien tussen de definitie van een structuur en die van een klasse. Een eenvoudig voorbeeld is de volgende `Saiyan`-structuur:
+
+<!--
 # Chapter 2 - Structures
+-->
 
+<!--
 Go isn't an object-oriented (OO) language like C++, Java, Ruby and C#. It doesn't have objects nor inheritance and thus, doesn't have the many concepts associated with OO such as polymorphism and overloading.
 
 What Go does have are structures, which can be associated with methods. Go also supports a simple but effective form of composition. Overall, it results in simpler code, but there'll be occasions where you'll miss some of what OO has to offer. (It's worth pointing out that *composition over inheritance* is an old battle cry and Go is the first language I've used that takes a firm stand on the issue.)
 
 Although Go doesn't do OO like you may be used to, you'll notice a lot of similarities between the definition of a structure and that of a class. A simple example is the following `Saiyan` structure:
+-->
 
 ```go
 type Saiyan struct {
-  Name string
-  Power int
+  Naam string
+  Kracht int
 }
 ```
 
+We zullen snel zien hoe we een methode aan deze structuur kunnen toevoegen, net zoals je methoden zou hebben als onderdeel van een klasse. Voordat we dat doen, moeten we eerst terug naar declaraties.
+
+<!--
 We'll soon see how to add a method to this structure, much like you'd have methods as part of a class. Before we do that, we have to dive back into declarations.
+-->
 
+## Declaraties en Initialisaties
+
+<!--
 ## Declarations and Initializations
+-->
 
+Toen we voor het eerst naar variabelen en declaraties keken, behandelden we alleen ingebouwde types, zoals gehele getallen en strings. Nu we het over structuren hebben, moeten we dat gesprek uitbreiden en ook verwijzers meenemen.
+
+De eenvoudigste manier om een waarde van onze structuur te maken is:
+
+```go
+goku := Saiyan{
+  Naam: "Goku",
+  Kracht: 9000,
+}
+```
+
+<!--
 When we first looked at variables and declarations, we looked only at built-in types, like integers and strings. Now that we're talking about structures, we need to expand that conversation to include pointers.
 
 The simplest way to create a value of our structure is:
@@ -854,7 +894,22 @@ goku := Saiyan{
   Power: 9000,
 }
 ```
+-->
 
+*Opmerking:* De afsluitende `,` in de bovenstaande structuur is vereist. Zonder deze zal de compiler een fout geven. Je zult de verplichte consistentie waarderen, vooral als je een taal of formaat hebt gebruikt dat het tegenovergestelde afdwingt.
+
+We hoeven niet alle velden, of zelfs maar één veld, in te stellen. Beide van deze zijn geldig:
+
+```go
+goku := Saiyan{}
+
+// of
+
+goku := Saiyan{Naam: "Goku"}
+goku.Kracht = 9000
+```
+
+<!--
 *Note:* The trailing `,` in the above structure is required. Without it, the compiler will give an error. You'll appreciate the required consistency, especially if you've used a language or format that enforces the opposite.
 
 We don't have to set all or even any of the fields. Both of these are valid:
@@ -867,7 +922,17 @@ goku := Saiyan{}
 goku := Saiyan{Name: "Goku"}
 goku.Power = 9000
 ```
+-->
 
+Net zoals niet-toegewezen variabelen een nulwaarde hebben, geldt dit ook voor velden.
+
+Bovendien kun je de veldnamen overslaan en vertrouwen op de volgorde van de velddeclaraties (maar voor de duidelijkheid moet je dit alleen doen bij structuren met weinig velden):
+
+```go
+goku := Saiyan{"Goku", 9000}
+```
+
+<!--
 Just like unassigned variables have a zero value, so do fields.
 
 Furthermore, you can skip the field name and rely on the order of the field declarations (though for the sake of clarity, you should only do this for structures with few fields):
@@ -875,13 +940,35 @@ Furthermore, you can skip the field name and rely on the order of the field decl
 ```go
 goku := Saiyan{"Goku", 9000}
 ```
+-->
 
+Wat alle bovenstaande voorbeelden doen, is een variabele `goku` declareren en er een waarde aan toewijzen.  
+
+Vaak willen we echter niet een variabele die direct aan onze waarde is gekoppeld, maar een variabele die een pointer naar onze waarde bevat. Een verwijzer is een geheugenadres; het geeft aan waar de daadwerkelijke waarde te vinden is. Dit vormt een extra laag van indirectie. Vrij vertaald is het het verschil tussen in een huis zijn en de routebeschrijving naar dat huis hebben.  
+
+Waarom zouden we een verwijzer naar de waarde willen, in plaats van de waarde zelf? Dit heeft te maken met de manier waarop Go argumenten aan een functie doorgeeft: als kopieën. Wetende dat dit zo werkt, wat zal de volgende code afdrukken?
+
+<!--
 What all of the above examples do is declare a variable `goku` and assign a value to it.
 
 Many times though, we don't want a variable that is directly associated with our value but rather a variable that has a pointer to our value. A pointer is a memory address; it's the location of where to find the actual value. It's a level of indirection. Loosely, it's the difference between being at a house and having directions to the house.
 
 Why do we want a pointer to the value, rather than the actual value? It comes down to the way Go passes arguments to a function: as copies. Knowing this, what does the following print?
+-->
 
+```go
+func main() {
+  goku := Saiyan{"Goku", 9000}
+  Super(goku)
+  fmt.Println(goku.Kracht)
+}
+
+func Super(s Saiyan) {
+  s.Kracht += 10000
+}
+```
+
+<!--
 ```go
 func main() {
   goku := Saiyan{"Goku", 9000}
@@ -893,9 +980,29 @@ func Super(s Saiyan) {
   s.Power += 10000
 }
 ```
+-->
 
+Het antwoord is 9000, niet 19000. Waarom? Omdat `Super` wijzigingen heeft aangebracht in een kopie van onze oorspronkelijke `goku`-waarde, en daarom werden de wijzigingen in `Super` niet doorgevoerd in de aanroepende code.  
+
+Om dit te laten werken zoals je waarschijnlijk verwacht, moeten we een pointer naar onze waarde doorgeven:
+
+<!--
 The answer is 9000, not 19000. Why? Because `Super` made changes to a copy of our original `goku` value and thus, changes made in `Super` weren't reflected in the caller. To make this work as you probably expect, we need to pass a pointer to our value:
+-->
 
+```go
+func main() {
+  goku := &Saiyan{"Goku", 9000}
+  Super(goku)
+  fmt.Println(goku.Kracht)
+}
+
+func Super(s *Kracht) {
+  s.Kracht += 10000
+}
+```
+
+<!--
 ```go
 func main() {
   goku := &Saiyan{"Goku", 9000}
@@ -907,13 +1014,35 @@ func Super(s *Saiyan) {
   s.Power += 10000
 }
 ```
+-->
 
+We hebben twee wijzigingen aangebracht. De eerste is het gebruik van het `&`-verwerkingsteken om het adres van onze waarde op te halen (deze wordt de *adres van*-verwerkingsteken genoemd). Vervolgens hebben we het type parameter dat `Super` verwacht aangepast. Voorheen verwachtte het een waarde van het type `Saiyan`, maar nu verwacht het een adres van het type `*Saiyan`, waarbij `*X` betekent *verwijzer naar een waarde van type X*. Er is duidelijk een relatie tussen de types `Saiyan` en `*Saiyan`, maar het zijn twee verschillende types.  
+
+Let op dat we nog steeds een kopie van `goku`'s waarde doorgeven aan `Super`, alleen is `goku`'s waarde nu een adres geworden. Die kopie is hetzelfde adres als het origineel, en dat is precies wat deze indirectie ons oplevert. Zie het als het kopiëren van de routebeschrijving naar een restaurant: wat je hebt, is een kopie, maar die verwijst nog steeds naar hetzelfde restaurant als het origineel.  
+
+We kunnen bewijzen dat het een kopie is door te proberen te veranderen waarnaar het verwijst (iets wat je in de praktijk waarschijnlijk niet wilt doen):
+
+<!--
 We made two changes. The first is the use of the `&` operator to get the address of our value (it's called the *address of* operator). Next, we changed the type of parameter `Super` expects. It used to expect a value of type `Saiyan` but now expects an address of type `*Saiyan`, where `*X` means *pointer to value of type X*. There's obviously some relation between the types `Saiyan` and `*Saiyan`, but they are two distinct types.
 
 Note that we're still passing a copy of `goku's` value to `Super` it just so happens that `goku's` value has become an address. That copy is the same address as the original, which is what that indirection buys us. Think of it as copying the directions to a restaurant. What you have is a copy, but it still points to the same restaurant as the original.
 
 We can prove that it's a copy by trying to change where it points to (not something you'd likely want to actually do):
+-->
 
+```go
+func main() {
+  goku := &Saiyan{"Goku", 9000}
+  Super(goku)
+  fmt.Println(goku.Kracht)
+}
+
+func Super(s *Saiyan) {
+  s = &Saiyan{"Gohan", 1000}
+}
+```
+
+<!--
 ```go
 func main() {
   goku := &Saiyan{"Goku", 9000}
@@ -925,12 +1054,23 @@ func Super(s *Saiyan) {
   s = &Saiyan{"Gohan", 1000}
 }
 ```
+-->
 
+De bovenstaande code drukt, opnieuw, 9000 af. Dit is hoe veel talen zich gedragen, waaronder Ruby, Python, Java en C#. Go en in zekere mate ook C# maken dit feit gewoon zichtbaar.
+
+Het zou ook duidelijk moeten zijn dat het kopiëren van een verwijzers goedkoper is dan het kopiëren van een complexe structuur. Op een 64-bits machine is een pointer 64 bits groot. Als we een structuur hebben met veel velden, dan kan het aanmaken van kopieën kostbaar zijn. De echte waarde van pointers is echter dat ze je toestaan waarden te delen. Willen we dat `Super` een kopie van `goku` aanpast, of dat hij de gedeelde `goku`-waarde zelf aanpast?
+
+Dit betekent niet dat je altijd voor een verwijzer moet kiezen. Aan het einde van dit hoofdstuk, nadat we wat meer hebben gezien van wat we met structuren kunnen doen, zullen we de vraag "verwijzer versus waarde” opnieuw bekijken.
+
+<!--
 The above, once again, prints 9000. This is how many languages behave, including Ruby, Python, Java and C#. Go, and to some degree C#, simply make the fact visible.
 
 It should also be obvious that copying a pointer is going to be cheaper than copying a complex structure. On a 64-bit machine, a pointer is 64 bits large. If we have a structure with many fields, creating copies can be expensive. The real value of pointers though is that they let you share values. Do we want `Super` to alter a copy of `goku` or alter the shared `goku` value itself?
 
 All this isn't to say that you'll always want a pointer. At the end of this chapter, after we've seen a bit more of what we can do with structures, we'll re-examine the pointer-versus-value question.
+-->
+
+<!-- TOT HIER -->
 
 ## Functions on Structures
 

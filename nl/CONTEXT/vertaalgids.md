@@ -10,8 +10,10 @@ Vertaalgids:
 * array ==
 * assembler == 
 * assignment operator == toewijzingsoperator
+* assigned => toegewezen
 * built-in => ingebouwde
 * Caching ==
+* class =~ klasse
 * code snippet => code blok
 * Coding stijl => Programmeerstijl
 * command line interface => command-line interfaces
@@ -30,11 +32,15 @@ Vertaalgids:
 * environment viriables => omgevingsvariabelen
 * executable => uitvoerbare bestand
 * function => functie
+* field =~ veld
 * garbage collected ==
 * get = neem
 * High-level == High-Level
+* inheritance =~ overerving
 * import =~ importeren
+* indirection =~ indirectie
 * Incremental => Incrementeel
+* initialization =~ initialisatie
 * identifier =~ identificator
 * Integer == integer (geheel getal)
 * imports ==
@@ -49,11 +55,18 @@ Vertaalgids:
 * logging ==
 * logging => loggen
 * Low-level == Low-Level
+* memory == geheugen
+* memory => geheugenadres
 * Messaging ==
 * modeling => moddelering
+* method =~ methode
 * monitoring == 
 * Operating system => Besturingssysteem
 * output == output
+* object oriented =~ objectgeoriënteerd
+* operator => verwerkingsteken
+* OO == 
+* overloading ==
 * parameter declaration =~ parameterdeclaratie
 * package ==
 * Paradigm =~ Paradigma
@@ -61,12 +74,15 @@ Vertaalgids:
 * prefix => vooraf laten gaan
 * process => proces
 * prompt ==
+* polyformism =~ polyformisme
+* pointer == verwijzer
 * relational database => relationele database
 * return =~ retourneren
 * returnwaarde =~ retourneerwaarde
 * run => draaien
 * scope ==
 * standard library => standaardbibliotheek
+* structures =~ strukturen
 * statically typed => statisch getypeerd
 * string ==
 * Syntax =~ Syntaxis
@@ -76,3 +92,4 @@ Vertaalgids:
 * type system => typesysteem
 * variables =~ variabelen
 * workspace == workspace
+* zero value == nulwaarde
