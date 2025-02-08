@@ -8,6 +8,7 @@
 Vertaalgids:
 
 * array ==
+* alloceren ==
 * assembler == 
 * assignment operator == toewijzingsoperator
 * assigned => toegewezen
@@ -16,6 +17,7 @@ Vertaalgids:
 * class =~ klasse
 * code snippet => code blok
 * Coding stijl => Programmeerstijl
+* constructor == 
 * command line interface => command-line interfaces
 * command prompt => commandoprompt
 * Community == Community
@@ -31,6 +33,8 @@ Vertaalgids:
 * error => fout
 * environment viriables => omgevingsvariabelen
 * executable => uitvoerbare bestand
+* factory => fabriek
+* factory pattern => fabriekspatroon
 * function => functie
 * field =~ veld
 * garbage collected ==
@@ -43,6 +47,7 @@ Vertaalgids:
 * initialization =~ initialisatie
 * identifier =~ identificator
 * Integer == integer (geheel getal)
+* instance =~ instantie
 * imports ==
 * infrastructure-type systems => infrastructuursystemen
 * key-value store ==
@@ -61,6 +66,7 @@ Vertaalgids:
 * modeling => moddelering
 * method =~ methode
 * monitoring == 
+* new ==
 * Operating system => Besturingssysteem
 * output == output
 * object oriented =~ objectgeoriënteerd
@@ -69,9 +75,11 @@ Vertaalgids:
 * overloading ==
 * parameter declaration =~ parameterdeclaratie
 * package ==
+* pattern == patroon
 * Paradigm =~ Paradigma
 * path => pad
 * prefix => vooraf laten gaan
+* print ==
 * process => proces
 * prompt ==
 * polyformism =~ polyformisme
@@ -82,7 +90,7 @@ Vertaalgids:
 * run => draaien
 * scope ==
 * standard library => standaardbibliotheek
-* structures =~ strukturen
+* structures =~ structuren
 * statically typed => statisch getypeerd
 * string ==
 * Syntax =~ Syntaxis
@@ -91,5 +99,6 @@ Vertaalgids:
 * Type System => Type-systeem
 * type system => typesysteem
 * variables =~ variabelen
+* vs => versus
 * workspace == workspace
 * zero value == nulwaarde

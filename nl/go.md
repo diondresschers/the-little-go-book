@@ -833,7 +833,7 @@ If you're coming from a dynamic language, the complexity around types and declar
 If you're coming from a statically typed language, you're probably feeling comfortable with Go. Inferred types and multiple return values are nice (though certainly not exclusive to Go). Hopefully as we learn more, you'll appreciate the clean and terse syntax.
 -->
 
-# Hoofdstuk 2 - Strukturen
+# Hoofdstuk 2 - Structuren
 
 Go is geen objectgeoriënteerde (OO) taal zoals C++, Java, Ruby en C#. Het heeft geen objecten of overerving en daarmee ook niet de vele concepten die bij OO horen, zoals polymorfisme en overloading.
 
@@ -1070,10 +1070,25 @@ It should also be obvious that copying a pointer is going to be cheaper than cop
 All this isn't to say that you'll always want a pointer. At the end of this chapter, after we've seen a bit more of what we can do with structures, we'll re-examine the pointer-versus-value question.
 -->
 
-<!-- TOT HIER -->
+## Functies en Structuren
 
+<!--
 ## Functions on Structures
+-->
 
+We kunnen een methode koppelen aan een structuur.
+
+```go
+type Saiyan struct {
+  Naam string
+  Kracht int
+}
+
+func (s *Saiyan) Super() {
+  s.Kracht += 10000
+}
+```
+<!--
 We can associate a method with a structure:
 
 ```go
@@ -1086,7 +1101,17 @@ func (s *Saiyan) Super() {
   s.Power += 10000
 }
 ```
+-->
 
+In de bovenstaande code zeggen we dat het type `*Saiyan` de **ontvanger** is van de methode `Super`. We roepen `Super` als volgt aan:
+
+```go
+goku := &Saiyan{"Goku", 9001}
+goku.Super()
+fmt.Println(goku.Power) // dit print 19001
+```
+
+<!--
 In the above code, we say that the type `*Saiyan` is the **receiver** of the `Super` method. We call `Super` like so:
 
 ```go
@@ -1094,9 +1119,22 @@ goku := &Saiyan{"Goku", 9001}
 goku.Super()
 fmt.Println(goku.Power) // will print 19001
 ```
+-->
 
 ## Constructors
 
+Structuren hebben geen constructors. In plaats daarvan maak je een functie die een instantie van het gewenste type retourneert (zoals een fabriek):
+
+```go
+func NieuweSaiyan(naam string, kracht int) *Saiyan {
+  return &Saiyan{
+    Naam: naam,
+    Kracht: kracht,
+  }
+}
+```
+
+<!--
 Structures don't have constructors. Instead, you create a function that returns an instance of the desired type (like a factory):
 
 ```go
@@ -1107,7 +1145,22 @@ func NewSaiyan(name string, power int) *Saiyan {
   }
 }
 ```
+-->
 
+Deze patroon stuit bij veel ontwikkelaars op weerstand. Enerzijds is het slechts een kleine syntactische verandering, anderzijds voelt het iets minder gescheiden aan.
+
+Onze fabriek hoeft geen pointer terug te geven; dit is volledig geldig:
+
+```go
+func NieuwSaiyan(naam string, kracht int) Saiyan {
+  return Saiyan{
+    Naam: kracht,
+    Kracht: kracht,
+  }
+}
+```
+
+<!--
 This pattern rubs a lot of developers the wrong way. On the one hand, it's a pretty slight syntactical change; on the other, it does feel a little less compartmentalized.
 
 Our factory doesn't have to return a pointer; this is absolutely valid:
@@ -1120,11 +1173,40 @@ func NewSaiyan(name string, power int) Saiyan {
   }
 }
 ```
+-->
 
 ## New
 
-Despite the lack of constructors, Go does have a built-in `new` function which is used to allocate the memory required by a type. The result of `new(X)` is the same as `&X{}`:
+Ondanks het ontbreken van constructors, heeft Go wel een ingebouwde `new`-functie, die wordt gebruikt om het geheugen te alloceren dat nodig is voor een type. Het resultaat van `new(X)` is hetzelfde als `&X{}`:
 
+```go
+goku := new(Saiyan)
+// is hetzelfde als
+goku := &Saiyan{}
+```
+
+Welke van de twee opties je kiest, is aan jou, maar de meeste mensen geven de voorkeur aan de tweede optie wanneer ze velden willen initialiseren, omdat deze eenvoudiger te lezen is:
+
+```go
+goku := new(Saiyan)
+goku.Naam = "goku"
+goku.Kracht = 9001
+
+// versus
+
+goku := &Saiyan {
+  Naam: "goku",
+  Kracht: 9000,
+}
+```
+
+Welke benadering je ook kiest, als je het hierboven beschreven fabriekspatroon volgt, kun je de rest van je code afschermen van de details van geheugentoewijzing.
+
+<!--
+Despite the lack of constructors, Go does have a built-in `new` function which is used to allocate the memory required by a type. The result of `new(X)` is the same as `&X{}`:
+-->
+
+<!--
 ```go
 goku := new(Saiyan)
 // same as
@@ -1147,6 +1229,9 @@ goku := &Saiyan {
 ```
 
 Whichever approach you choose, if you follow the factory pattern above, you can shield the rest of your code from knowing and worrying about any of the allocation details.
+-->
+
+<!-- TOT HIER -->
 
 ## Fields of a Structure
 
