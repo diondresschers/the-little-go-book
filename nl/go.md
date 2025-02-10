@@ -944,7 +944,7 @@ goku := Saiyan{"Goku", 9000}
 
 Wat alle bovenstaande voorbeelden doen, is een variabele `goku` declareren en er een waarde aan toewijzen.  
 
-Vaak willen we echter niet een variabele die direct aan onze waarde is gekoppeld, maar een variabele die een pointer naar onze waarde bevat. Een verwijzer is een geheugenadres; het geeft aan waar de daadwerkelijke waarde te vinden is. Dit vormt een extra laag van indirectie. Vrij vertaald is het het verschil tussen in een huis zijn en de routebeschrijving naar dat huis hebben.  
+Vaak willen we echter niet een variabele die direct aan onze waarde is gekoppeld, maar een variabele die een verwijzer naar onze waarde bevat. Een verwijzer is een geheugenadres; het geeft aan waar de daadwerkelijke waarde te vinden is. Dit vormt een extra laag van indirectie. Vrij vertaald is het het verschil tussen in een huis zijn en de routebeschrijving naar dat huis hebben.  
 
 Waarom zouden we een verwijzer naar de waarde willen, in plaats van de waarde zelf? Dit heeft te maken met de manier waarop Go argumenten aan een functie doorgeeft: als kopieën. Wetende dat dit zo werkt, wat zal de volgende code afdrukken?
 
@@ -984,7 +984,7 @@ func Super(s Saiyan) {
 
 Het antwoord is 9000, niet 19000. Waarom? Omdat `Super` wijzigingen heeft aangebracht in een kopie van onze oorspronkelijke `goku`-waarde, en daarom werden de wijzigingen in `Super` niet doorgevoerd in de aanroepende code.  
 
-Om dit te laten werken zoals je waarschijnlijk verwacht, moeten we een pointer naar onze waarde doorgeven:
+Om dit te laten werken zoals je waarschijnlijk verwacht, moeten we een verwijzer naar onze waarde doorgeven:
 
 <!--
 The answer is 9000, not 19000. Why? Because `Super` made changes to a copy of our original `goku` value and thus, changes made in `Super` weren't reflected in the caller. To make this work as you probably expect, we need to pass a pointer to our value:
@@ -1058,7 +1058,7 @@ func Super(s *Saiyan) {
 
 De bovenstaande code drukt, opnieuw, 9000 af. Dit is hoe veel talen zich gedragen, waaronder Ruby, Python, Java en C#. Go en in zekere mate ook C# maken dit feit gewoon zichtbaar.
 
-Het zou ook duidelijk moeten zijn dat het kopiëren van een verwijzers goedkoper is dan het kopiëren van een complexe structuur. Op een 64-bits machine is een pointer 64 bits groot. Als we een structuur hebben met veel velden, dan kan het aanmaken van kopieën kostbaar zijn. De echte waarde van pointers is echter dat ze je toestaan waarden te delen. Willen we dat `Super` een kopie van `goku` aanpast, of dat hij de gedeelde `goku`-waarde zelf aanpast?
+Het zou ook duidelijk moeten zijn dat het kopiëren van een verwijzers goedkoper is dan het kopiëren van een complexe structuur. Op een 64-bits machine is een verwijzer 64 bits groot. Als we een structuur hebben met veel velden, dan kan het aanmaken van kopieën kostbaar zijn. De echte waarde van verwijzer is echter dat ze je toestaan waarden te delen. Willen we dat `Super` een kopie van `goku` aanpast, of dat hij de gedeelde `goku`-waarde zelf aanpast?
 
 Dit betekent niet dat je altijd voor een verwijzer moet kiezen. Aan het einde van dit hoofdstuk, nadat we wat meer hebben gezien van wat we met structuren kunnen doen, zullen we de vraag "verwijzer versus waarde” opnieuw bekijken.
 
@@ -1149,7 +1149,7 @@ func NewSaiyan(name string, power int) *Saiyan {
 
 Deze patroon stuit bij veel ontwikkelaars op weerstand. Enerzijds is het slechts een kleine syntactische verandering, anderzijds voelt het iets minder gescheiden aan.
 
-Onze fabriek hoeft geen pointer terug te geven; dit is volledig geldig:
+Onze fabriek hoeft geen verwijzer terug te geven; dit is volledig geldig:
 
 ```go
 func NieuwSaiyan(naam string, kracht int) Saiyan {
@@ -1233,11 +1233,21 @@ Whichever approach you choose, if you follow the factory pattern above, you can 
 
 <!-- TOT HIER -->
 
-## Fields of a Structure
+## Velden van Structuur
 
+<!--
+## Fields of a Structure
+-->
+
+In het voorbeeld dat we tot nu toe hebben gezien, heeft `Saiyan` twee velden: `Name` en `Power`, van respectievelijk de typen `string` en `int`. Velden kunnen van elk type zijn, inclusief andere structuren en typen die we nog niet hebben onderzocht, zoals arrays, maps, interfaces en functies.
+
+Bijvoorbeeld, we zouden onze definitie van `Saiyan` kunnen uitbreiden:
+
+<!--
 In the example that we've seen so far, `Saiyan` has two fields `Name` and `Power` of types `string` and `int`, respectively. Fields can be of any type -- including other structures and types that we haven't explored yet such as arrays, maps, interfaces and functions.
 
 For example, we could expand our definition of `Saiyan`:
+-->
 
 ```go
 type Saiyan struct {
@@ -1247,6 +1257,31 @@ type Saiyan struct {
 }
 ```
 
+<!--
+```go
+type Saiyan struct {
+  Naam string
+  Kracht int
+  Vader *Saiyan
+}
+```
+-->
+
+welke we initialiseren met:
+
+```go
+gohan := &Saiyan{
+  Naam: "Gohan",
+  Kracht: 1000,
+  Vader: &Saiyan {
+    Naam: "Goku",
+    Kracht: 9001,
+    Vader: nil,
+  },
+}
+```
+
+<!--
 which we'd initialize via:
 
 ```go
@@ -1260,10 +1295,20 @@ gohan := &Saiyan{
   },
 }
 ```
+-->
 
+
+## Compositie
+
+<!--
 ## Composition
+-->
 
+Go ondersteunt compositie, wat het opnemen van de ene structuur in een andere betekent. In sommige talen wordt dit een trait of een mixin genoemd. Talen die geen expliciet compositiemechanisme hebben, kunnen dit altijd op een omslachtige manier doen. In Java is het mogelijk om structuren uit te breiden met overerving, maar in een scenario waarin dit geen optie is, zou een mixin als volgt worden geschreven:
+
+<!--
 Go supports composition, which is the act of including one structure into another. In some languages, this is called a trait or a mixin. Languages that don't have an explicit composition mechanism can always do it the long way. In Java, there's the possibility to extend structures with *inheritance* but, in a scenario where this is not an option, a mixin would be written like this:
+-->
 
 ```java
 public class Person {
@@ -1286,6 +1331,54 @@ public class Saiyan {
 }
 ```
 
+<!--
+```java
+public class Persoon {
+  private String naam;
+
+  public String neemNaam() {
+    return this.naam;
+  }
+}
+
+public class Saiyan {
+  // Van Saigan wordt gezegd een persoon te hebben
+  private Persoon persoon;
+
+  // we sturen de aanroep door naar Persoon
+  public String neemNaam() {
+    return this.persoon.neemNaam();
+  }
+  ...
+}
+```
+-->
+
+Dit kan behoorlijk omslachtig worden. Elke methode van Persoon moet worden gedupliceerd in Saiyan. Go voorkomt deze omslachtigheid:
+
+```go
+type Perso0n struct {
+  Naam string
+}
+
+func (p *Persoon) Introduceer() {
+  fmt.Printf("Hallo, ik ben %s\n", p.Naam)
+}
+
+type Saiyan struct {
+  *Persoon
+  Kracht int
+}
+
+// en om het te gebruiken:
+goku := &Saiyan{
+  Persoon: &Persoon{"Goku"},
+  Power: 9001,
+}
+goku.Introduceer()
+```
+
+<!--
 This can get pretty tedious. Every method of `Person` needs to be duplicated in `Saiyan`. Go avoids this tediousness:
 
 ```go
@@ -1309,7 +1402,19 @@ goku := &Saiyan{
 }
 goku.Introduce()
 ```
+-->
 
+De `Saiyan`-structuur heeft een veld van het type `*Persoon`. Omdat we het geen expliciete veldnaam hebben gegeven, kunnen we impliciet toegang krijgen tot de velden en functies van het samengestelde type. De Go-compiler heeft echter *wel* een veldnaam toegekend. Zie het volgende, dat volledig geldig is:
+
+```go
+goku := &Saiyan{
+  Persoon: &Persoon{"Goku"},
+}
+fmt.Println(goku.Naam)
+fmt.Println(goku.Person.Naam)
+```
+
+<!--
 The `Saiyan` structure has a field of type `*Person`. Because we didn't give it an explicit field name, we can implicitly access the fields and functions of the composed type. However, the Go compiler *did* give it a field name, consider the perfectly valid:
 
 ```go
@@ -1319,13 +1424,41 @@ goku := &Saiyan{
 fmt.Println(goku.Name)
 fmt.Println(goku.Person.Name)
 ```
+-->
 
+Beide bovenstaande voorbeelden zullen "Goku" afdrukken.  
+
+Is compositie beter dan overerving? Veel mensen beschouwen het als een robuustere manier om code te delen. Bij het gebruik van overerving is je klasse sterk gekoppeld aan de superclass, waardoor de nadruk meer op hiërarchie dan op gedrag komt te liggen.
+
+<!--
 Both of the above will print "Goku".
 
 Is composition better than inheritance? Many people think that it's a more robust way to share code. When using inheritance, your class is tightly coupled to your superclass and you end up focusing on hierarchy rather than behavior.
+-->
 
+### Overladen
+
+<!--
 ### Overloading
+-->
 
+Hoewel overladen specifiek is voor strukturen, is het de moeite waard om te bespreken. Simpel gezegd: Go ondersteunt geen overladen. Daarom zul je veel functies tegenkomen (en schrijven) met namen als `Laad`, `LaadOpId`, `LaadOpNaam`, enzovoort.  
+
+Omdat impliciete compositie in feite slechts een compilertruc is, kunnen we echter de functies van een samengesteld type "overschrijven". Onze `Saiyan`-structuur kan bijvoorbeeld zijn eigen `Introduceer`-functie hebben:
+
+```go
+func (s *Saiyan) Introduceer() {
+  fmt.Printf("Hoi, Ik ben %s. Ja!\n", s.Naam)
+}
+```
+
+The gecomposeerde versie is altijd beschikbaar via `s.Persoon.Introduceer()`.
+
+<!--
+The composed version is always available via `s.Person.Introduce()`.
+-->
+
+<!--
 While overloading isn't specific to structures, it's worth addressing. Simply, Go doesn't support overloading. For this reason, you'll see (and write) a lot of functions that look like `Load`, `LoadById`, `LoadByName` and so on.
 
 However, because implicit composition is really just a compiler trick, we can "overwrite" the functions of a composed type. For example, our `Saiyan` structure can have its own `Introduce` function:
@@ -1337,9 +1470,40 @@ func (s *Saiyan) Introduce() {
 ```
 
 The composed version is always available via `s.Person.Introduce()`.
+-->
 
+## Verwijzer versus Waarden
+
+<!--
 ## Pointers versus Values
+-->
 
+Wanneer je Go-code schrijft, is het logisch om jezelf af te vragen: *moet dit een waarde zijn of een verwijzer naar een waarde?* Er zijn twee goede dingen om te weten. Ten eerste is het antwoord hetzelfde, ongeacht waar het over gaat:  
+
+- Een lokale variabeletoewijzing  
+- Een veld in een struct  
+- Een retourneerwaarde van een functie  
+- Parameters van een functie  
+- De ontvanger van een methode  
+
+Ten tweede, als je het niet zeker weet, gebruik dan een verwijzer.  
+
+Zoals we eerder zagen, is het doorgeven van waarden een goede manier om data immutabel te maken (wijzigingen die een functie aanbrengt, worden niet weerspiegeld in de aanroepende code). Soms is dit gewenst gedrag, maar vaak ook niet.  
+
+Zelfs als je de data niet wilt wijzigen, moet je nadenken over de kosten van het kopiëren van grote structuren. Aan de andere kant, als je met kleine structuren werkt, zoals:  
+
+```go
+type Verwijzer struct {
+  X int
+  Y int
+}
+```
+
+dan is de overhead van het kopiëren waarschijnlijk verwaarloosbaar in vergelijking met de directe toegang tot `X` en `Y`, zonder extra indirectie via een verwijzer.  
+
+Dit zijn subtiele afwegingen. Tenzij je door duizenden of zelfs tienduizenden van zulke structuren iterereert, zul je het verschil waarschijnlijk niet merken.
+
+<!--
 As you write Go code, it's natural to ask yourself *should this be a value, or a pointer to a value?* There are two pieces of good news. First, the answer is the same regardless of which of the following we're talking about:
 
 * A local variable assignment
@@ -1364,10 +1528,18 @@ type Point struct {
 In such cases, the cost of copying the structure is probably offset by being able to access `X` and `Y` directly, without any indirection.
 
 Again, these are all pretty subtle cases. Unless you're iterating over thousands or possibly tens of thousands of such points, you wouldn't notice a difference.
+-->
 
+## Voordat Je Verder Gaat  
+<!--
 ## Before You Continue
+-->
 
+Vanuit een praktisch oogpunt heeft dit hoofdstuk structuren geïntroduceerd, uitgelegd hoe je een instantie van een struct als ontvanger van een functie kunt gebruiken en ons bestaande begrip van Go’s typesysteem uitgebreid met verwijzers. De volgende hoofdstukken zullen voortbouwen op wat we hebben geleerd over structuren en de interne werking die we hebben verkend.
+
+<!--
 From a practical point of view, this chapter introduced structures, how to make an instance of a structure a receiver of a function, and added pointers to our existing knowledge of Go's type system. The following chapters will build on what we know about structures as well as the inner workings that we've explored.
+-->
 
 # Chapter 3 - Maps, Arrays and Slices
 

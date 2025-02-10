@@ -14,14 +14,17 @@ Vertaalgids:
 * assigned => toegewezen
 * built-in => ingebouwde
 * Caching ==
+* call => aanroep
 * class =~ klasse
 * code snippet => code blok
 * Coding stijl => Programmeerstijl
 * constructor == 
 * command line interface => command-line interfaces
 * command prompt => commandoprompt
+* composition =~ compositie
 * Community == Community
 * Compilation => Compilatie
+* composition => compositie
 * compiler ==
 * compiled binary => gecombileerde binary
 * data-analysis => data-analyse
@@ -57,6 +60,7 @@ Vertaalgids:
 * Libraries => Bibliotheek
 * License => Licentie
 * log collector => logverzamelaar
+* load =~ laadt
 * logging ==
 * logging => loggen
 * Low-level == Low-Level
@@ -71,6 +75,7 @@ Vertaalgids:
 * output == output
 * object oriented =~ objectgeoriënteerd
 * operator => verwerkingsteken
+* overloading =~ overladen
 * OO == 
 * overloading ==
 * parameter declaration =~ parameterdeclaratie
@@ -85,6 +90,7 @@ Vertaalgids:
 * polyformism =~ polyformisme
 * pointer == verwijzer
 * relational database => relationele database
+* receiver => ontvanger
 * return =~ retourneren
 * returnwaarde =~ retourneerwaarde
 * run => draaien
@@ -93,12 +99,17 @@ Vertaalgids:
 * structures =~ structuren
 * statically typed => statisch getypeerd
 * string ==
+* superclass =~ superklasse
 * Syntax =~ Syntaxis
 * structures =~ structuren
+* trait ==
+* mixin ==
 * The Little Go Book == The Little Go Book
 * Type System => Type-systeem
 * type system => typesysteem
 * variables =~ variabelen
 * vs => versus
 * workspace == workspace
+* values => waarden
+* variable assignment => variabeletoewijzing 
 * zero value == nulwaarde
