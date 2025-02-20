@@ -64,6 +64,7 @@ Vertaalgids:
 * logging ==
 * logging => loggen
 * Low-level == Low-Level
+* map ==
 * memory == geheugen
 * memory => geheugenadres
 * Messaging ==
@@ -94,7 +95,10 @@ Vertaalgids:
 * return =~ retourneren
 * returnwaarde =~ retourneerwaarde
 * run => draaien
+* runtime => uitvoering
+* runtime error => uitvoeringsfout
 * scope ==
+* slices ==
 * standard library => standaardbibliotheek
 * structures =~ structuren
 * statically typed => statisch getypeerd

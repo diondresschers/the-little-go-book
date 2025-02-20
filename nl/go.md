@@ -1541,21 +1541,61 @@ Vanuit een praktisch oogpunt heeft dit hoofdstuk structuren geïntroduceerd, uit
 From a practical point of view, this chapter introduced structures, how to make an instance of a structure a receiver of a function, and added pointers to our existing knowledge of Go's type system. The following chapters will build on what we know about structures as well as the inner workings that we've explored.
 -->
 
-# Chapter 3 - Maps, Arrays and Slices
+# Hoofdstuk 3 - Maps, Arrays en Slices
 
+<!-- # Chapter 3 - Maps, Arrays and Slices-->
+
+Tot nu toe hebben we een aantal eenvoudige typen en structuren gezien. Het is nu tijd om te kijken naar arrays, slices en maps.
+
+<!--
 So far we've seen a number of simple types and structures. It's now time to look at arrays, slices and maps.
+-->
 
 ## Arrays
 
+<!-- ## Arrays -->
+
+Als je afkomstig bent van Python, Ruby, Perl, JavaScript of PHP (en meer), ben je waarschijnlijk gewend om te programmeren met dynamische arrays. Dit zijn arrays die zichzelf aanpassen in grootte naarmate er data aan wordt toegevoegd. In Go, net als in veel andere talen, zijn arrays echter vast. Bij het declareren van een array moeten we de grootte specificeren, en zodra de grootte is vastgesteld, kan deze niet meer groeien:
+
+<!--
 If you come from Python, Ruby, Perl, JavaScript or PHP (and more), you're probably used to programming with *dynamic arrays*. These are arrays that resize themselves as data is added to them. In Go, like many other languages, arrays are fixed. Declaring an array requires that we specify the size, and once the size is specified, it cannot grow:
+-->
 
 ```go
 var scores [10]int
 scores[0] = 339
 ```
 
-The above array can hold up to 10 scores using indexes `scores[0]` through `scores[9]`. Attempts to access an out of range index in the array will result in a compiler or runtime error.
+Bovenstaande array kan maximaal 10 scores bevatten, met indexen van scores[0] tot en met scores[9]. Pogingen om een index buiten dit bereik te benaderen, resulteren in een compileer- of uitvoeringsfout.
 
+<!--
+```go
+var scores [10]int
+scores[0] = 339
+```
+
+The above array can hold up to 10 scores using indexes `scores[0]` through `scores[9]`. Attempts to access an out of range index in the array will result in a compiler or runtime error.
+-->
+
+We kunnen de array initializeren met deze waarden:
+
+```go
+scores := [4]int{9001, 9333, 212, 33}
+```
+
+We kunnen `len` gebruiken om de lengte te krijgen van de array. Met `range` kunnen we erover itereren. 
+
+<!-- To Do: Wellicht `len` nog toevoegen in code? -->
+
+```go
+for index, waarde := range scores {
+
+}
+```
+
+Arrays zijn efficiënt maar star. Vaak weten we van tevoren niet hoeveel elementen we nodig hebben. Hiervoor gebruiken we slices.
+
+<!--
 We can initialize the array with values:
 
 ```go
@@ -1571,6 +1611,7 @@ for index, value := range scores {
 ```
 
 Arrays are efficient but rigid. We often don't know the number of elements we'll be dealing with upfront. For this, we turn to slices.
+-->
 
 ## Slices
 
