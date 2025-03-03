@@ -1615,27 +1615,57 @@ Arrays are efficient but rigid. We often don't know the number of elements we'll
 
 ## Slices
 
+<!-- ## Slices -->
+
+In Go gebruik je zelden, of eigenlijk nooit, arrays direct. In plaats daarvan gebruik je slices. Een slice is een lichtgewicht structuur die een deel van een array omhult en vertegenwoordigt. Er zijn verschillende manieren om een slice te maken, en later bespreken we wanneer je welke methode gebruikt. De eerste manier lijkt sterk op hoe we een array aanmaken:
+
+<!--
 In Go, you rarely, if ever, use arrays directly. Instead, you use slices. A slice is a lightweight structure that wraps and represents a portion of an array. There are a few ways to create a slice, and we'll go over when to use which later on. The first is a slight variation on how we created an array:
+-->
 
 ```go
 scores := []int{1,4,293,4,9}
 ```
 
-Unlike the array declaration, our slice isn't declared with a length within the square brackets. To understand how the two are different, let's see another way to create a slice, using `make`:
+<!--
+```go
+scores := []int{1,4,293,4,9}
+```
+-->
+
+In tegenstelling tot de declaratie van een array wordt bij een slice geen lengte binnen de vierkante haken opgegeven. Om het verschil tussen beide beter te begrijpen, bekijken we een andere manier om een slice te maken met `make`:
 
 ```go
 scores := make([]int, 10)
 ```
 
-We use `make` instead of `new` because there's more to creating a slice than just allocating the memory (which is what `new` does). Specifically, we have to allocate the memory for the underlying array and also initialize the slice.  In the above, we initialize a slice with a length of 10 and a capacity of 10. The length is the size of the slice, the capacity is the size of the underlying array. Using `make` we can specify the two separately:
+<!--
+Unlike the array declaration, our slice isn't declared with a length within the square brackets. To understand how the two are different, let's see another way to create a slice, using `make`:
+-->
+
+We gebruiken `make` in plaats van `new` omdat er bij het maken van een slice meer komt kijken dan alleen het toewijzen van geheugen (wat `new` doet). Specifiek moeten we niet alleen het geheugen voor de onderliggende array reserveren, maar ook de slice initialiseren. In het bovenstaande voorbeeld maken we een slice met een lengte van 10 en een capaciteit van 10. De lengte is de grootte van de slice, terwijl de capaciteit de grootte van de onderliggende array aangeeft. Met `make` kunnen we deze twee waarden afzonderlijk specificeren:
 
 ```go
 scores := make([]int, 0, 10)
 ```
 
+<!--
+We use `make` instead of `new` because there's more to creating a slice than just allocating the memory (which is what `new` does). Specifically, we have to allocate the memory for the underlying array and also initialize the slice.  In the above, we initialize a slice with a length of 10 and a capacity of 10. The length is the size of the slice, the capacity is the size of the underlying array. Using `make` we can specify the two separately:
+
+```go
+scores := make([]int, 0, 10)
+```
+-->
+
+Dit creëert een slice met een lengte van 0 maar met een capaciteit van 10. (Als je goed oplet, zul je merken dat `make` en `len` *overloaded* zijn. Go is een taal die, tot frustratie van sommigen, gebruikmaakt van functies die niet expliciet toegankelijk zijn voor ontwikkelaars.)
+
+Om de wisselwerking tussen lengte en capaciteit beter te begrijpen, laten we een paar voorbeelden bekijken:
+
+<!--
 This creates a slice with a length of 0 but with a capacity of 10. (If you're paying attention, you'll note that `make` and `len` *are* overloaded. Go is a language that, to the frustration of some, makes use of features which aren't exposed for developers to use.)
 
 To better understand the interplay between length and capacity, let's look at some examples:
+-->
 
 ```go
 func main() {
@@ -1645,8 +1675,31 @@ func main() {
 }
 ```
 
-Our first example crashes. Why? Because our slice has a length of 0. Yes, the underlying array has 10 elements, but we need to explicitly expand our slice in order to access those elements. One way to expand a slice is via `append`:
+<!--
+```go
+func main() {
+  scores := make([]int, 0, 10)
+  scores[7] = 9033
+  fmt.Println(scores)
+}
+```
+-->
 
+Ons eerste voorbeeld crasht. Waarom? Omdat onze slice een lengte van 0 heeft. Ja, de onderliggende array bevat 10 elementen, maar we moeten de slice expliciet uitbreiden om toegang te krijgen tot die elementen. Eén manier om een slice uit te breiden is met `append`:
+
+<!--
+Our first example crashes. Why? Because our slice has a length of 0. Yes, the underlying array has 10 elements, but we need to explicitly expand our slice in order to access those elements. One way to expand a slice is via `append`:
+-->
+
+```go
+func main() {
+  scores := make([]int, 0, 10)
+  scores = append(scores, 5)
+  fmt.Println(scores) // print [5]
+}
+```
+
+<!--
 ```go
 func main() {
   scores := make([]int, 0, 10)
@@ -1654,8 +1707,13 @@ func main() {
   fmt.Println(scores) // prints [5]
 }
 ```
+-->
 
+Maar dat verandert de bedoeling van onze oorspronkelijke code. Een waarde toevoegen (`append`) aan een slice met een lengte van 0 zal het eerste element instellen. Om welke reden dan ook wilde onze crashende code het element op index 7 instellen. Om dit te doen, kunnen we onze slice opnieuw slicen:
+
+<!--
 But that changes the intent of our original code. Appending to a slice of length 0 will set the first element. For whatever reason, our crashing code wanted to set the element at index 7. To do this, we can re-slice our slice:
+-->
 
 ```go
 func main() {
@@ -1666,10 +1724,49 @@ func main() {
 }
 ```
 
+<!--
+```go
+func main() {
+  scores := make([]int, 0, 10)
+  scores = scores[0:8]
+  scores[7] = 9033
+  fmt.Println(scores)
+}
+```
+-->
+
+Hoe groot kunnen we een slice maken? Tot aan zijn capaciteit, die in dit geval 10 is. Misschien denk je: *dit lost het probleem van de vaste lengte van arrays niet echt op.* Maar `append` is behoorlijk speciaal. Als de onderliggende array vol is, maakt Go een nieuwe, grotere array en kopieert de waarden over (precies zoals dynamische arrays werken in PHP, Python, Ruby, JavaScript, ...). Dit is waarom we in het bovenstaande voorbeeld, waarin we `append` gebruikten, de geretourneerde waarde opnieuw aan onze `scores`-variabele moesten toewijzen: `append` kan een nieuwe array maken als de oorspronkelijke geen ruimte meer heeft.  
+
+Als ik je zou vertellen dat Go arrays vergroot met een 2x-algoritme, kun je dan raden wat de volgende code zal uitgeven?
+
+<!--
 How large can we resize a slice? Up to its capacity which, in this case, is 10. You might be thinking *this doesn't actually solve the fixed-length issue of arrays.* It turns out that `append` is pretty special. If the underlying array is full, it will create a new larger array and copy the values over (this is exactly how dynamic arrays work in PHP, Python, Ruby, JavaScript, ...). This is why, in the example above that used `append`, we had to re-assign the value returned by `append` to our `scores` variable: `append` might have created a new value if the original had no more space.
 
 If I told you that Go grew arrays with a 2x algorithm, can you guess what the following will output?
+-->
 
+```go
+func main() {
+  scores := make([]int, 0, 5)
+  c := cap(scores)
+  fmt.Println(c)
+
+  for i := 0; i < 25; i++ {
+    scores = append(scores, i)
+
+
+  // als onze capaciteit is veranderd,  
+  // heeft Go de array moeten vergroten om de nieuwe data te kunnen opslaan
+
+    if cap(scores) != c {
+      c = cap(scores)
+      fmt.Println(c)
+    }
+  }
+}
+```
+
+<!--
 ```go
 func main() {
   scores := make([]int, 0, 5)
@@ -1688,10 +1785,17 @@ func main() {
   }
 }
 ```
+-->
 
+De begincapaciteit van `scores` is 5. Om 25 waarden te kunnen bevatten, moet de slice drie keer worden vergroot, met capaciteiten van 10, 20 en uiteindelijk 40.  
+
+Als laatste voorbeeld, zie de volgende code:
+
+<!--
 The initial capacity of `scores` is 5. In order to hold 25 values, it'll have to be expanded 3 times with a capacity of 10, 20 and finally 40.
 
 As a final example, consider:
+-->
 
 ```go
 func main() {
@@ -1701,21 +1805,63 @@ func main() {
 }
 ```
 
+<!--
+```go
+func main() {
+  scores := make([]int, 5)
+  scores = append(scores, 9332)
+  fmt.Println(scores)
+}
+```
+-->
+
+Hier zal de uitvoer `[0, 0, 0, 0, 0, 9332]` zijn. Misschien dacht je dat het `[9332, 0, 0, 0, 0]` zou zijn? Voor een mens lijkt dat logisch. Maar voor de compiler geef je aan dat je een waarde toevoegt (`append`) aan een slice die al 5 waarden bevat.  
+
+Uiteindelijk zijn er vier gangbare manieren om een slice te initialiseren:
+
+<!--
 Here, the output is going to be `[0, 0, 0, 0, 0, 9332]`. Maybe you thought it would be `[9332, 0, 0, 0, 0]`? To a human, that might seem logical. To a compiler, you're telling it to append a value to a slice that already holds 5 values.
 
 Ultimately, there are four common ways to initialize a slice:
+-->
 
+```go
+namen := []string{"leto", "jessica", "paul"}
+controle := make([]bool, 10)
+var namen []string
+scores := make([]int, 0, 20)
+```
+
+<!--
 ```go
 names := []string{"leto", "jessica", "paul"}
 checks := make([]bool, 10)
 var names []string
 scores := make([]int, 0, 20)
 ```
+-->
 
+Wanneer gebruik je welke? De eerste spreekt voor zich: je gebruikt deze wanneer je de waarden in de array van tevoren kent.  
+
+De tweede is handig wanneer je specifieke indexen van een slice wilt vullen. Bijvoorbeeld:
+
+<!--
 When do you use which? The first one shouldn't need much of an explanation. You use this when you know the values that you want in the array ahead of time.
 
 The second one is useful when you'll be writing into specific indexes of a slice. For example:
+-->
 
+```go
+func verkrijgKrachten(saiyans []*Saiyan) []int {
+  krachten := make([]int, len(saiyans))
+  for index, saiyan := range saiyans {
+    krachten[index] = saiyan.Kracht
+  }
+  return krachten
+}
+```
+
+<!--
 ```go
 func extractPowers(saiyans []*Saiyan) []int {
   powers := make([]int, len(saiyans))
@@ -1725,13 +1871,33 @@ func extractPowers(saiyans []*Saiyan) []int {
   return powers
 }
 ```
+-->
 
+De derde versie is een *nil slice* en wordt gebruikt in combinatie met `append` wanneer het aantal elementen onbekend is.  
+
+De laatste versie stelt ons in staat om een initiële capaciteit op te geven; handig als we een globaal idee hebben van hoeveel elementen we nodig zullen hebben.  
+
+Zelfs wanneer je de grootte al weet, kan `append` worden gebruikt. Het is grotendeels een kwestie van voorkeur:
+
+<!--
 The third version is a nil slice and is used in conjunction with `append`, when the number of elements is unknown.
 
 The last version lets us specify an initial capacity; useful if we have a general idea of how many elements we'll need.
 
 Even when you know the size, `append` can be used. It's largely a matter of preference:
+-->
 
+```go
+func verkrijgKrachten(saiyans []*Saiyan) []int {
+  krachten := make([]int, 0, len(saiyans))
+  for _, saiyan := range saiyans {
+    krachten = append(krachten, saiyan.Kracht)
+  }
+  return krachten
+}
+```
+
+<!--
 ```go
 func extractPowers(saiyans []*Saiyan) []int {
   powers := make([]int, 0, len(saiyans))
@@ -1741,8 +1907,13 @@ func extractPowers(saiyans []*Saiyan) []int {
   return powers
 }
 ```
+-->
 
+Slices als omhulsels voor arrays is een krachtig concept. Veel talen hebben het concept van een array *slicen*. Zowel JavaScript- als Ruby-arrays hebben een `slice`-methode. In Ruby kun je ook een slice krijgen met `[START..END]` en in Python met `[START:END]`.  Echter, in deze talen is een slice eigenlijk een nieuwe array waarin de waarden van het origineel zijn gekopieerd.  Als we Ruby als voorbeeld nemen, wat is dan de uitvoer van het volgende?
+
+<!--
 Slices as wrappers to arrays is a powerful concept. Many languages have the concept of slicing an array. Both JavaScript and Ruby arrays have a `slice` method. You can also get a slice in Ruby by using `[START..END]` or in Python via `[START:END]`. However, in these languages, a slice is actually a new array with the values of the original copied over. If we take Ruby, what's the output of the following?
+-->
 
 ```ruby
 scores = [1,2,3,4,5]
@@ -1751,7 +1922,20 @@ slice[0] = 999
 puts scores
 ```
 
+<!--
+```ruby
+scores = [1,2,3,4,5]
+slice = scores[2..4]
+slice[0] = 999
+puts scores
+```
+-->
+
+Het antwoord is `[1, 2, 3, 4, 5]`. Dit komt omdat `slice` een compleet nieuwe array is met gekopieerde waarden. Laten we nu het Go-equivalent bekijken:
+
+<!--
 The answer is `[1, 2, 3, 4, 5]`. That's because `slice` is a completely new array with copies of values. Now, consider the Go equivalent:
+-->
 
 ```go
 scores := []int{1,2,3,4,5}
@@ -1760,10 +1944,38 @@ slice[0] = 999
 fmt.Println(scores)
 ```
 
+<!--
+```go
+scores := []int{1,2,3,4,5}
+slice := scores[2:4]
+slice[0] = 999
+fmt.Println(scores)
+```
+-->
+
+De `[X:Y]`-syntaxis maakt een slice van `scores`, beginnend bij index 2 tot en met (maar exclusief) index 4. Echter, in tegenstelling tot het Ruby-voorbeeld hierboven, zal de Go-code de uitvoer `[1, 2, 999, 4, 5]` genereren. Dit komt doordat onze `slice` in feite een *venster* is op `scores`.  
+
+Dit verandert de manier waarop je code schrijft. Sommige functies accepteren bijvoorbeeld een positieparameter. In JavaScript, als we de eerste spatie in een string willen vinden na de eerste vijf tekens (ja, slices werken ook op strings!), zouden we schrijven:
+
+
+<!--
 The `[X:Y]` syntax creates a slice of `scores`, starting from index 2 up until (but not including) index 4. However, unlike the Ruby example above, the Go code will produce an output of `[1, 2, 999, 4, 5]`. This is because our `slice` is really just a window into `scores`.
 
 This changes how you code. For example, a number of functions take a position parameter. In JavaScript, if we want to find the first space in a string (yes, slices work on strings too!) after the first five characters, we'd write:
+-->
 
+```javascript
+hooiberg = "de spice moet vloeien";
+console.log(hooiberg.indexOf(" ", 5));
+```
+
+In Go maken we gebruik van slices:
+
+```go
+strings.Index(hooiberg[5:], " ")
+```
+
+<!--
 ```javascript
 haystack = "the spice must flow";
 console.log(haystack.indexOf(" ", 5));
@@ -1774,22 +1986,57 @@ In Go, we leverage slices:
 ```go
 strings.Index(haystack[5:], " ")
 ```
+-->
 
+Uit het bovenstaande voorbeeld kunnen we afleiden dat `[X:]` een afkorting is voor *van X tot het einde*, terwijl `[:X]` betekent *van het begin tot en met X (exclusief)*.  
+In tegenstelling tot sommige andere talen ondersteunt Go geen negatieve indexen. Als we alle waarden van een slice willen behalve de laatste, doen we:
+
+<!--
 We can see from the above example, that `[X:]` is shorthand for *from X to the end* while `[:X]` is shorthand for *from the start up until X*. Unlike other languages, Go doesn't support negative values. If we want all of the values of a slice except the last, we do:
+-->
 
 ```go
 scores := []int{1, 2, 3, 4, 5}
 scores = scores[:len(scores)-1]
 ```
 
-The above is the start of an efficient way to remove a value from an unsorted slice:
+Bovenstaande is het begin van een efficiënte manier om een waarde te verwijderen uit een *ongesorteerde* slice:  
 
+<!--
+```go
+scores := []int{1, 2, 3, 4, 5}
+scores = scores[:len(scores)-1]
+```
+
+The above is the start of an efficient way to remove a value from an unsorted slice:
+-->
+
+```go
+func main() {
+  scores := []int{1, 2, 3, 4, 5}
+  scores = verwijderOpIndex(scores, 2)
+  fmt.Println(scores) // [1 2 5 4]
+}
+```
+
+```go
+// behoudt de volgorde niet
+func verwijderOpIndex(bron []int, index int) []int {
+  laatstetIndex := len(bron) - 1
+  // verwissel de laatste waarde met de waarde die we willen verwijderen
+  bron[index], bron[lastIndex] = bron[laatsteIndex], bron[index]
+  return bron[:laatsteIndex]
+}
+```
+
+<!--
 ```go
 func main() {
   scores := []int{1, 2, 3, 4, 5}
   scores = removeAtIndex(scores, 2)
   fmt.Println(scores) // [1 2 5 4]
 }
+```
 
 // won't preserve order
 func removeAtIndex(source []int, index int) []int {
@@ -1799,9 +2046,35 @@ func removeAtIndex(source []int, index int) []int {
   return source[:lastIndex]
 }
 ```
+-->
 
+Tot slot, nu we slices begrijpen, kunnen we een andere veelgebruikte ingebouwde functie bekijken: `copy`.  `copy` is een van die functies die laten zien hoe slices de manier waarop we code schrijven veranderen. Normaal gesproken heeft een methode die waarden van de ene array naar de andere kopieert vijf parameters: `bron`, `bronStart`, `aantal`, `doel` en `doelStart`. Met slices hebben we er slechts twee nodig:
+
+<!--
 Finally, now that we know about slices, we can look at another commonly used built-in function: `copy`. `copy` is one of those functions that highlights how slices change the way we code. Normally, a method that copies values from one array to another has 5 parameters: `source`, `sourceStart`, `count`, `destination` and `destinationStart`. With slices, we only need two:
+-->
 
+```go
+import (
+	"fmt"
+	"math/rand"
+	"sort"
+)
+
+func main() {
+	scores := make([]int, 100)
+	for i := 0; i < 100; i++ {
+		scores[i] = int(rand.Int31n(1000))
+	}
+	sort.Ints(scores)
+
+	slechtste := make([]int, 5)
+	copy(slechtste, scores[:5])
+	fmt.Println(slechtste)
+}
+```
+
+<!--
 ```go
 import (
   "fmt"
@@ -1821,8 +2094,13 @@ func main() {
   fmt.Println(worst)
 }
 ```
+-->
 
+Neem wat tijd om met de bovenstaande code te experimenteren. Probeer variaties uit. Kijk wat er gebeurt als je `copy` verandert naar iets als: `copy(slechtste[2:4], scores[:5])`, of wat gebeurt er als je probeert meer of minder dan *5* waarden in `slechtste` te kopiëren?
+
+<!--
 Take some time and play with the above code. Try variations. See what happens if you change copy to something like `copy(worst[2:4], scores[:5])`, or what if you try to copy more or less than `5` values into `worst`?
+-->
 
 ## Maps
 

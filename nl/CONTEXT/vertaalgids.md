@@ -16,6 +16,7 @@ Vertaalgids:
 * Caching ==
 * call => aanroep
 * class =~ klasse
+* capacity =~ capaciteit
 * code snippet => code blok
 * Coding stijl => Programmeerstijl
 * constructor == 
@@ -26,6 +27,7 @@ Vertaalgids:
 * Compilation => Compilatie
 * composition => compositie
 * compiler ==
+* check => controle
 * compiled binary => gecombileerde binary
 * data-analysis => data-analyse
 * declaration =~ declaratie
@@ -72,6 +74,7 @@ Vertaalgids:
 * method =~ methode
 * monitoring == 
 * new ==
+* nil == (niks)
 * Operating system => Besturingssysteem
 * output == output
 * object oriented =~ objectgeoriënteerd
@@ -114,6 +117,7 @@ Vertaalgids:
 * variables =~ variabelen
 * vs => versus
 * workspace == workspace
+* wrapper => omhulsel
 * values => waarden
 * variable assignment => variabeletoewijzing 
 * zero value == nulwaarde
