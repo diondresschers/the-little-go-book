@@ -2104,6 +2104,25 @@ Take some time and play with the above code. Try variations. See what happens if
 
 ## Maps
 
+Maps in Go zijn wat andere talen hash-tabellen of dictionaries noemen. Ze werken zoals je verwacht: je definieert een sleutel en een waarde, en je kunt waarden opvragen, instellen en verwijderen.
+
+Maps, net als slices, worden aangemaakt met de `make`-functie. Laten we een voorbeeld bekijken:
+
+```go
+func main() {
+  zoekop := make(map[string]int)
+  zoekop["goku"] = 9001
+  kracht, bestaat := zoekop["vegeta"]
+
+  // print 0, false
+  // 0 is de standaard waarde voor een integer
+  fmt.Println(kracht, bestaat)
+}
+```
+
+<!--
+## Maps
+
 Maps in Go are what other languages call hashtables or dictionaries. They work as you expect: you define a key and value, and can get, set and delete values from it.
 
 Maps, like slices, are created with the `make` function. Let's look at an example:
@@ -2119,7 +2138,19 @@ func main() {
   fmt.Println(power, exists)
 }
 ```
+-->
 
+Om het aantal keys te verkrijgen, gebruiken we `len`. Om een waarde te verwijderen op basis van de sleutel, gebruiken we `delete`.
+
+```go
+// retourneert 1
+totaal := len(zoekop)
+
+// heeft geen returnwaarde, kan worden aangeroepen op een niet-bestaande sleutel
+delete(zoekop, "goku")
+```
+
+<!--
 To get the number of keys, we use `len`. To remove a value based on its key, we use `delete`:
 
 ```go
@@ -2129,13 +2160,34 @@ total := len(lookup)
 // has no return, can be called on a non-existing key
 delete(lookup, "goku")
 ```
+-->
 
+Maps groeien dynamisch. We kunnen echter een tweede argument aan `make` meegeven om een initiële grootte in te stellen:
+
+```go
+zoekop := make(map[string]int, 100)
+```
+
+<!--
 Maps grow dynamically. However, we can supply a second argument to `make` to set an initial size:
 
 ```go
 lookup := make(map[string]int, 100)
 ```
+-->
 
+Als je een idee hebt van hoeveel sleutels je map zal bevatten, kan het instellen van een initiële grootte de prestaties verbeteren.  
+
+Wanneer je een map als veld van een structuur nodig hebt, definieer je deze als:
+
+```go
+type Saiyan struct {
+  Naam string
+  Vrienden map[string]*Saiyan
+}
+```
+
+<!--
 If you have some idea of how many keys your map will have, defining an initial size can help with performance.
 
 When you need a map as a field of a structure, you define it as:
@@ -2146,7 +2198,19 @@ type Saiyan struct {
   Friends map[string]*Saiyan
 }
 ```
+-->
 
+Een manier om bovenstaande te initialiseren is door:
+
+```go
+goku := &Saiyan{
+  Naam: "Goku",
+  Vrienden: make(map[string]*Saiyan),
+}
+goku.Vrienden["krillin"] = ... //todo:laad of creëer Krillin
+```
+
+<!--
 One way to initialize the above is via:
 
 ```go
@@ -2156,7 +2220,18 @@ goku := &Saiyan{
 }
 goku.Friends["krillin"] = ... //todo load or create Krillin
 ```
+-->
 
+Er is nog een andere manier om waarden in Go te declareren en initialiseren. Net als `make` is deze aanpak specifiek voor maps en arrays. We kunnen een samengestelde literal gebruiken:
+
+```go
+zoekop := map[string]int{
+  "goku": 9001,
+  "gohan": 2044,
+}
+```
+
+<!--
 There's yet another way to declare and initialize values in Go. Like `make`, this approach is specific to maps and arrays. We can declare as a composite literal:
 
 ```go
@@ -2165,7 +2240,19 @@ lookup := map[string]int{
   "gohan": 2044,
 }
 ```
+-->
 
+We kunnen een map itereren met een `for`-lus in combinatie met het `range`-trefwoord:
+
+```go
+for sleutel, waarde := range zoekop {
+  ...
+}
+```
+
+Iteratie over maps is niet geordend. Elke iteratie over een zoekop retourneert het sleutel-waarde-paar in willekeurige volgorde.
+
+<!--
 We can iterate over a map using a `for` loop combined with the `range` keyword:
 
 ```go
@@ -2176,9 +2263,11 @@ for key, value := range lookup {
 
 Iteration over maps isn't ordered. Each iteration over a lookup will return the key value pair in a random order.
 
+-->
+
 ## Pointers versus Values
 
-We finished Chapter 2 by looking at whether you should assign and pass pointers or values. We'll now have this same conversation with respect to array and map values. Which of these should you use?
+We sloten hoofdstuk 2 af met de vraag of je pointers of waarden moet toewijzen en doorgeven. Nu gaan we ditzelfde bespreken met betrekking tot array- en mapwaarden. Welke van deze moet je gebruiken?
 
 ```go
 a := make([]Saiyan, 10)
@@ -2186,15 +2275,39 @@ a := make([]Saiyan, 10)
 b := make([]*Saiyan, 10)
 ```
 
+<!--
+We finished Chapter 2 by looking at whether you should assign and pass pointers or values. We'll now have this same conversation with respect to array and map values. Which of these should you use?
+
+```go
+a := make([]Saiyan, 10)
+//or
+b := make([]*Saiyan, 10)
+```
+-->
+
+Veel ontwikkelaars denken dat het efficiënter is om `b` door te geven aan of te retourneren uit een functie. Echter, wat wordt doorgegeven of geretourneerd is een kopie van de slice, die zelf een referentie is. Met betrekking tot het doorgeven of retourneren van de slice zelf, is er dus geen verschil.  
+
+Waar je wel een verschil zult zien, is wanneer je de waarden van een slice of map wijzigt. Op dat moment geldt dezelfde logica als in hoofdstuk 2. De keuze om een array van pointers of een array van waarden te definiëren, hangt dus af van hoe je de individuele waarden gebruikt, niet van hoe je de array of map zelf gebruikt.
+
+<!--
 Many developers think that passing `b` to, or returning it from, a function is going to be more efficient. However, what's being passed/returned is a copy of the slice, which itself is a reference. So with respect to passing/returning the slice itself, there's no difference.
 
 Where you will see a difference is when you modify the values of a slice or map. At this point, the same logic that we saw in Chapter 2 applies. So the decision on whether to define an array of pointers versus an array of values comes down to how you use the individual values, not how you use the array or map itself.
+-->
 
+## Voordat je verdergaat  
+
+Arrays en maps in Go werken grotendeels zoals in andere talen. Als je gewend bent aan dynamische arrays, kan er een kleine aanpassing nodig zijn, maar `append` zou de meeste ongemakken moeten wegnemen. Wanneer we verder kijken dan de oppervlakkige syntax van arrays, ontdekken we slices. Slices zijn krachtig en hebben een verrassend grote invloed op de helderheid van je code.  
+
+Er zijn randgevallen die we niet hebben behandeld, maar je zult deze waarschijnlijk niet tegenkomen. Mocht dat toch gebeuren, dan helpt de basis die we hier hebben gelegd je hopelijk te begrijpen wat er aan de hand is.
+
+<!--
 ## Before You Continue
 
 Arrays and maps in Go work much like they do in other languages. If you're used to dynamic arrays, there might be a small adjustment, but `append` should solve most of your discomfort. If we peek beyond the superficial syntax of arrays, we find slices. Slices are powerful and they have a surprisingly large impact on the clarity of your code.
 
 There are edge cases that we haven't covered, but you're not likely to run into them. And, if you do, hopefully the foundation we've built here will let you understand what's going on.
+-->
 
 # Chapter 4 - Code Organization and Interfaces
 

@@ -31,6 +31,7 @@ Vertaalgids:
 * compiled binary => gecombileerde binary
 * data-analysis => data-analyse
 * declaration =~ declaratie
+* default => standaardwaarde
 * Device Drivers => stuurprogramma's
 * dictionary ==
 * elements =~ elementen8
@@ -55,8 +56,9 @@ Vertaalgids:
 * instance =~ instantie
 * imports ==
 * infrastructure-type systems => infrastructuursystemen
-* key-value store ==
-* Keyword => Keyword
+* key-value store => sleutel-waarde-opslag (ToDo: zoek op 'key-value store' en vervang)
+* key == sleutel (ToDo: ZOEK OP 'key' en vervang!!!)
+* Keyword => Trefwoord (ToDo Keyword!!! ToDo: Zoeken op Keyword!!!)
 * Language => Programmeertaal
 * Language Design => Taalontwerp
 * Libraries => Bibliotheek
@@ -64,6 +66,7 @@ Vertaalgids:
 * log collector => logverzamelaar
 * load =~ laadt
 * logging ==
+* loop => lus
 * logging => loggen
 * Low-level == Low-Level
 * map ==
@@ -95,6 +98,7 @@ Vertaalgids:
 * pointer == verwijzer
 * relational database => relationele database
 * receiver => ontvanger
+* reference =~ referentie
 * return =~ retourneren
 * returnwaarde =~ retourneerwaarde
 * run => draaien
@@ -119,5 +123,6 @@ Vertaalgids:
 * workspace == workspace
 * wrapper => omhulsel
 * values => waarden
+* windows => venster 
 * variable assignment => variabeletoewijzing 
 * zero value == nulwaarde
